@@ -1,0 +1,60 @@
+package vn.edu.ptit.PhanHoangAnh.student_management.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import vn.edu.ptit.PhanHoangAnh.student_management.dao.ClassRepository;
+import vn.edu.ptit.PhanHoangAnh.student_management.dao.SchoolRepository;
+import vn.edu.ptit.PhanHoangAnh.student_management.entity.Clazz;
+import vn.edu.ptit.PhanHoangAnh.student_management.entity.School;
+
+import java.util.List;
+
+@Service
+public class ClassServiceImpl implements ClassService{
+    private ClassRepository classRepository;
+    private SchoolRepository schoolRepository;
+
+    @Autowired
+    public ClassServiceImpl(ClassRepository classRepository, SchoolRepository schoolRepository) {
+        this.classRepository = classRepository;
+        this.schoolRepository = schoolRepository;
+    }
+
+    @Override
+    public Clazz findClassById(int id) {
+        return this.classRepository.findById(id).orElseThrow(() -> new RuntimeException("Error"));
+    }
+
+    @Override
+    public List<Clazz> findAllClass() {
+        return this.classRepository.findAll();
+    }
+
+    @Transactional
+    @Override
+    public Clazz saveClass(int SchoolId, Clazz clazz) {
+        School school = this.schoolRepository.findById(SchoolId).orElseThrow(() -> new RuntimeException("Error"));
+        school.addClass(clazz);
+
+        return this.classRepository.save(clazz);
+    }
+
+    @Transactional
+    @Override
+    public Clazz updateClassById(int id, Clazz clazz) {
+        Clazz clazz1 = this.classRepository.findById(id).orElseThrow(() -> new RuntimeException("Error"));
+        clazz1.setName(clazz.getName());
+        clazz1.setGrade(clazz.getGrade());
+        clazz1.setYear(clazz.getYear());
+
+        return this.classRepository.saveAndFlush(clazz1);
+    }
+
+    @Transactional
+    @Override
+    public void deleteClassById(int id) {
+        Clazz clazz = this.classRepository.findById(id).orElseThrow(() -> new RuntimeException("Error"));
+        this.classRepository.delete(clazz);
+    }
+}
