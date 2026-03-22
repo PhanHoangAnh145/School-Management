@@ -6,26 +6,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import vn.edu.ptit.PhanHoangAnh.student_management.dao.RoleRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.UserRepository;
+import vn.edu.ptit.PhanHoangAnh.student_management.entity.Role;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.User;
+import vn.edu.ptit.PhanHoangAnh.student_management.service.UserService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/register")
 public class RegisterController {
-    private UserRepository userRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private UserService userService;
 
     @Autowired
-    public RegisterController (UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    public RegisterController (UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/user")
     public String register(@RequestBody User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        this.userRepository.save(user);
-
-        return "OK";
+        try {
+            userService.register(user);
+            return "OK";
+        }
+        catch (Exception e) {
+            return "Error....";
+        }
     }
+
 }

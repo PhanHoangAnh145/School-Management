@@ -32,7 +32,10 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests(
                 configurer -> configurer.requestMatchers("/register/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/student/**").hasAnyRole("STUDENT", "MANAGER", "ADMIN")
+                        .requestMatchers("/teacher/**").hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().permitAll()
         ).formLogin(
                 login -> login.disable());
 

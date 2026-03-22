@@ -13,8 +13,7 @@ public class Role {
     @Column(name = "name")
     private String name;
 
-    public Role(int id, String name) {
-        this.id = id;
+    public Role(String name) {
         this.name = name;
     }
 
