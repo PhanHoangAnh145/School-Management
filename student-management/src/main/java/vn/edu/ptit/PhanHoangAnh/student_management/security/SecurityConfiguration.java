@@ -35,7 +35,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/student/**").hasAnyRole("STUDENT", "MANAGER", "ADMIN")
                         .requestMatchers("/teacher/**").hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
         ).formLogin(
                 login -> login.disable());
 
