@@ -1,8 +1,10 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Transcription;
+import vn.edu.ptit.PhanHoangAnh.student_management.helper.ApiResponse;
 import vn.edu.ptit.PhanHoangAnh.student_management.service.TranscriptionService;
 import java.util.List;
 
@@ -18,27 +20,32 @@ public class TranscriptionController {
     }
 
     @GetMapping("/{id}")
-    public Transcription findTranscriptionById(@PathVariable int id) {
-        return this.transcriptionService.findTranscriptionById(id);
+    public ResponseEntity<ApiResponse<Transcription>> findTranscriptionById(@PathVariable int id) {
+        Transcription transcription = this.transcriptionService.findTranscriptionById(id);
+        return ApiResponse.success(transcription);
     }
 
     @GetMapping()
-    public List<Transcription> findAllTranscription() {
-        return this.transcriptionService.findAllTranscription();
+    public ResponseEntity<ApiResponse<List<Transcription>>> findAllTranscription() {
+        List<Transcription> transcriptionList = this.transcriptionService.findAllTranscription();
+        return ApiResponse.success(transcriptionList);
     }
 
     @PostMapping("/{studentId}")
-    public Transcription saveTranscription(@PathVariable int studentId, @RequestBody Transcription transcription) {
-        return this.transcriptionService.saveTranscription(studentId, transcription);
+    public ResponseEntity<ApiResponse<Transcription>> saveTranscription(@PathVariable int studentId, @RequestBody Transcription transcription) {
+        Transcription transcriptionSave = this.transcriptionService.saveTranscription(studentId, transcription);
+        return ApiResponse.created(transcriptionSave);
     }
 
     @PutMapping("/{id}")
-    public Transcription updateTranscriptionById(@PathVariable int id, @RequestBody Transcription transcription) {
-        return this.transcriptionService.updateTranscriptionById(id, transcription);
+    public ResponseEntity<ApiResponse<Transcription>> updateTranscriptionById(@PathVariable int id, @RequestBody Transcription transcription) {
+        Transcription transcriptionUpdate = this.transcriptionService.updateTranscriptionById(id, transcription);
+        return ApiResponse.success(transcriptionUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTranscriptionById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteTranscriptionById(@PathVariable int id) {
         this.transcriptionService.deleteTranscriptionById(id);
+        return ApiResponse.success("delete success...");
     }
 }

@@ -22,7 +22,7 @@ public class Parent {
 
     @OneToOne
     @JoinColumn(name = "student_id")
-    @JsonBackReference
+    @JsonBackReference(value = "student-parent")
     private Student student;
 
     public Parent() {

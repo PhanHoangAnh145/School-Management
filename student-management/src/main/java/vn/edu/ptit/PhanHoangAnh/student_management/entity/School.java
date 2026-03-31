@@ -27,11 +27,11 @@ public class School {
     private int grade;
 
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "school-class")
     public List<Clazz> clazzList;
 
     @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "school-employee")
     public List<Employee> employeeList;
 
     public School() {

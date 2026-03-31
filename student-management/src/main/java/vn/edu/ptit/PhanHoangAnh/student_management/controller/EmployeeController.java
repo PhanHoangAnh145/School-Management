@@ -1,9 +1,10 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vn.edu.ptit.PhanHoangAnh.student_management.entity.Clazz;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Employee;
+import vn.edu.ptit.PhanHoangAnh.student_management.helper.ApiResponse;
 import vn.edu.ptit.PhanHoangAnh.student_management.service.EmployeeService;
 
 import java.util.List;
@@ -19,27 +20,32 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Employee findEmployeeById(@PathVariable int id) {
-        return this.employeeService.findEmployeeById(id);
+    public ResponseEntity<ApiResponse<Employee>> findEmployeeById(@PathVariable int id) {
+        Employee employee = this.employeeService.findEmployeeById(id);
+        return ApiResponse.success(employee);
     }
 
     @GetMapping()
-    public List<Employee> findAllEmployee() {
-        return this.employeeService.findAllEmployee();
+    public ResponseEntity<ApiResponse<List<Employee>>> findAllEmployee() {
+        List<Employee> employeeList = this.employeeService.findAllEmployee();
+        return ApiResponse.success(employeeList);
     }
 
     @PostMapping("/{schoolId}")
-    public Employee saveEmployee(@PathVariable int schoolId, @RequestBody Employee employee) {
-        return this.employeeService.saveEmployee(schoolId, employee);
+    public ResponseEntity<ApiResponse<Employee>> saveEmployee(@PathVariable int schoolId, @RequestBody Employee employee) {
+        Employee employeeSave = this.employeeService.saveEmployee(schoolId, employee);
+        return ApiResponse.created(employeeSave);
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployeeById(@PathVariable int id, @RequestBody Employee employee) {
-        return this.employeeService.updateEmployeeById(id, employee);
+    public ResponseEntity<ApiResponse<Employee>> updateEmployeeById(@PathVariable int id, @RequestBody Employee employee) {
+        Employee employeeUpdate = this.employeeService.updateEmployeeById(id, employee);
+        return ApiResponse.success(employeeUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteEmployeeById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteEmployeeById(@PathVariable int id) {
         this.employeeService.deleteEmployeeById(id);
+        return ApiResponse.success("delete success...");
     }
 }

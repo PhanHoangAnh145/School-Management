@@ -22,23 +22,23 @@ public class Student {
 
     @ManyToOne
     @JoinColumn(name = "class_id")
-    @JsonBackReference
+    @JsonBackReference(value = "class-student")
     private Clazz clazz;
 
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "student-record")
     private StudentRecord studentRecord;
 
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "student-detail")
     private StudentDetail studentDetail;
 
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "student-parent")
     private Parent parent;
 
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "student-transcript")
     private Transcription transcription;
 
     public Student() {

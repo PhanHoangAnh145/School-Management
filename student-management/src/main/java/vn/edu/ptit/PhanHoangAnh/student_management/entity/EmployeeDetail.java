@@ -22,7 +22,7 @@ public class EmployeeDetail {
 
     @OneToOne
     @JoinColumn(name = "employee_id")
-    @JsonBackReference
+    @JsonBackReference(value = "employee-detail")
     private Employee employee;
 
     public EmployeeDetail() {

@@ -17,7 +17,7 @@ public class Subject {
     private String name;
 
     @ManyToMany(mappedBy = "subjectList")
-    @JsonBackReference
+    @JsonBackReference(value = "teacher-subject")
     private List<Teacher> teacherList;
 
     public Subject() {

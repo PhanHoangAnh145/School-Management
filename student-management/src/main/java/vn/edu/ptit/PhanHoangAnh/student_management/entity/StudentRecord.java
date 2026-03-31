@@ -16,7 +16,7 @@ public class StudentRecord {
 
     @OneToOne
     @JoinColumn(name = "student_id")
-    @JsonBackReference
+    @JsonBackReference(value = "student-record")
     private Student student;
 
     public StudentRecord() {

@@ -1,8 +1,10 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.ClassLogbook;
+import vn.edu.ptit.PhanHoangAnh.student_management.helper.ApiResponse;
 import vn.edu.ptit.PhanHoangAnh.student_management.service.ClassLogbookService;
 import java.util.List;
 
@@ -18,27 +20,32 @@ public class ClassLogbookController {
     }
 
     @GetMapping("/{id}")
-    public ClassLogbook findClassLogbookById(@PathVariable int id) {
-        return this.classLogbookService.findClassLogbookById(id);
+    public ResponseEntity<ApiResponse<ClassLogbook>> findClassLogbookById(@PathVariable int id) {
+        ClassLogbook classLogbook = this.classLogbookService.findClassLogbookById(id);
+        return ApiResponse.success(classLogbook);
     }
 
     @GetMapping()
-    public List<ClassLogbook> findAllClassLogbook() {
-        return this.classLogbookService.findAllClassLogbook();
+    public ResponseEntity<ApiResponse<List<ClassLogbook>>> findAllClassLogbook() {
+        List<ClassLogbook> classLogbookList = this.classLogbookService.findAllClassLogbook();
+        return ApiResponse.success(classLogbookList);
     }
 
     @PostMapping("/{classId}")
-    public ClassLogbook saveClassLogbook(@PathVariable int classId, @RequestBody ClassLogbook classLogbook) {
-        return this.classLogbookService.saveClassLogbook(classId, classLogbook);
+    public ResponseEntity<ApiResponse<ClassLogbook>> saveClassLogbook(@PathVariable int classId, @RequestBody ClassLogbook classLogbook) {
+        ClassLogbook classLogbookSave = this.classLogbookService.saveClassLogbook(classId, classLogbook);
+        return ApiResponse.created(classLogbookSave);
     }
 
     @PutMapping("/{id}")
-    public ClassLogbook updateClassLogbookById(@PathVariable int id, @RequestBody ClassLogbook classLogbook) {
-        return this.classLogbookService.updateClassLogbookById(id, classLogbook);
+    public ResponseEntity<ApiResponse<ClassLogbook>> updateClassLogbookById(@PathVariable int id, @RequestBody ClassLogbook classLogbook) {
+        ClassLogbook classLogbookUpdate = this.classLogbookService.updateClassLogbookById(id, classLogbook);
+        return ApiResponse.success(classLogbookUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteClassLogbookById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteClassLogbookById(@PathVariable int id) {
         this.classLogbookService.deleteClassLogbookById(id);
+        return ApiResponse.success("delete success...");
     }
 }

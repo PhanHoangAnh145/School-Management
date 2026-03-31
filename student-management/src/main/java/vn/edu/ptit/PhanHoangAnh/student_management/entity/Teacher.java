@@ -20,7 +20,7 @@ public class Teacher{
             joinColumns = @JoinColumn(name = "teacher_id"),
             inverseJoinColumns = @JoinColumn(name = "class_id")
     )
-    @JsonManagedReference
+    @JsonManagedReference(value = "class-teacher")
     private List<Clazz> clazzList;
 
     @ManyToMany
@@ -29,12 +29,12 @@ public class Teacher{
             joinColumns = @JoinColumn(name = "teacher_id"),
             inverseJoinColumns = @JoinColumn(name = "subject_id")
     )
-    @JsonManagedReference
+    @JsonManagedReference(value = "teacher-subject")
     private List<Subject> subjectList;
 
     @OneToOne
     @JoinColumn(name = "employee_id")
-    @JsonBackReference
+    @JsonBackReference(value = "teacher-employee")
     private Employee employee;
 
     public Teacher() {

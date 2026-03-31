@@ -2,8 +2,10 @@ package vn.edu.ptit.PhanHoangAnh.student_management.controller;
 
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.User;
+import vn.edu.ptit.PhanHoangAnh.student_management.helper.ApiResponse;
 import vn.edu.ptit.PhanHoangAnh.student_management.service.UserService;
 
 @RestController
@@ -17,13 +19,13 @@ public class AdminController {
     }
 
     @PostMapping("/register/user")
-    public String register(@RequestBody User user, @RequestParam String role) {
+    public ResponseEntity<ApiResponse<String>> register(@RequestBody User user, @RequestParam String role) {
         try{
             this.userService.createUserByAdmin(user, role);
-            return "OK";
+            return ApiResponse.created("User registered successfully");
         }
         catch (Exception e) {
-            return "Error...";
+            return ApiResponse.error(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR, "Error registering user: " + e.getMessage());
         }
     }
 }

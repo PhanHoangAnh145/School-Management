@@ -16,7 +16,7 @@ public class ClassLogbook {
 
     @OneToOne
     @JoinColumn(name = "class_id")
-    @JsonBackReference
+    @JsonBackReference(value = "class-logbook")
     private Clazz clazz;
 
     public ClassLogbook() {

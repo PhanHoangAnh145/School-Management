@@ -21,15 +21,15 @@ public class Employee {
 
     @ManyToOne
     @JoinColumn(name = "school_id")
-    @JsonBackReference
+    @JsonBackReference(value = "school-employee")
     public School school;
 
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "employee-detail")
     private EmployeeDetail employeeDetail;
 
     @OneToOne(mappedBy = "employee")
-    @JsonManagedReference
+    @JsonManagedReference(value = "teacher-employee")
     public Teacher teacher;
 
     public Employee() {

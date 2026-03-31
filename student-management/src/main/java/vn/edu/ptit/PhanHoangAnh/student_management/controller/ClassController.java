@@ -1,8 +1,10 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Clazz;
+import vn.edu.ptit.PhanHoangAnh.student_management.helper.ApiResponse;
 import vn.edu.ptit.PhanHoangAnh.student_management.service.ClassService;
 
 import java.util.List;
@@ -18,27 +20,32 @@ public class ClassController {
     }
 
     @GetMapping("/{id}")
-    public Clazz findClassById(@PathVariable int id) {
-        return this.classService.findClassById(id);
+    public ResponseEntity<ApiResponse<Clazz>> findClassById(@PathVariable int id) {
+        Clazz clazz = this.classService.findClassById(id);
+        return ApiResponse.success(clazz);
     }
 
     @GetMapping()
-    public List<Clazz> findAllClass() {
-        return this.classService.findAllClass();
+    public ResponseEntity<ApiResponse<List<Clazz>>> findAllClass() {
+        List<Clazz> clazzList = this.classService.findAllClass();
+        return ApiResponse.success(clazzList);
     }
 
     @PostMapping("/{schoolId}")
-    public Clazz saveClass(@PathVariable int schoolId, @RequestBody Clazz clazz) {
-        return this.classService.saveClass(schoolId, clazz);
+    public ResponseEntity<ApiResponse<Clazz>> saveClass(@PathVariable int schoolId, @RequestBody Clazz clazz) {
+        Clazz clazzSave = this.classService.saveClass(schoolId, clazz);
+        return ApiResponse.created(clazzSave);
     }
 
     @PutMapping("/{id}")
-    public Clazz updateClassById(@PathVariable int id, @RequestBody Clazz clazz) {
-        return this.classService.updateClassById(id, clazz);
+    public ResponseEntity<ApiResponse<Clazz>> updateClassById(@PathVariable int id, @RequestBody Clazz clazz) {
+        Clazz clazzUpdate = this.classService.updateClassById(id, clazz);
+        return ApiResponse.success(clazzUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteClassById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteClassById(@PathVariable int id) {
         this.classService.deleteClassById(id);
+        return ApiResponse.success("delete success...");
     }
 }

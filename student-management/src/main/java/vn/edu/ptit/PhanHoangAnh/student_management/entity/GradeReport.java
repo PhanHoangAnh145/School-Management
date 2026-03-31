@@ -19,7 +19,7 @@ public class GradeReport {
 
     @ManyToOne
     @JoinColumn(name = "transcription_id")
-    @JsonBackReference
+    @JsonBackReference(value = "grade-transcript")
     private Transcription transcription;
 
     public GradeReport() {

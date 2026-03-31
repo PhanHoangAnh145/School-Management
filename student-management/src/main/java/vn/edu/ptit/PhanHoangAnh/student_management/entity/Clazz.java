@@ -26,19 +26,19 @@ public class Clazz {
 
     @ManyToOne
     @JoinColumn(name = "school_id")
-    @JsonBackReference
+    @JsonBackReference(value = "school-class")
     private School school;
 
     @ManyToMany(mappedBy = "clazzList")
-    @JsonBackReference
+    @JsonBackReference(value = "class-teacher")
     private List<Teacher> teacherList;
 
     @OneToOne(mappedBy = "clazz", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "class-logbook")
     private ClassLogbook classLogbook;
 
     @OneToMany(mappedBy = "clazz", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "class-student")
     private List<Student> studentList;
 
     public Clazz() {

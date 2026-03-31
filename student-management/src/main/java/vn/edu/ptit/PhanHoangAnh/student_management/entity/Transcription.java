@@ -26,11 +26,11 @@ public class Transcription {
 
     @OneToOne
     @JoinColumn(name = "student_id")
-    @JsonBackReference
+    @JsonBackReference(value = "student-transcript")
     private Student student;
 
     @OneToMany(mappedBy = "transcription", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "grade-transcript")
     private List<GradeReport> gradeReportList;
 
     public Transcription() {

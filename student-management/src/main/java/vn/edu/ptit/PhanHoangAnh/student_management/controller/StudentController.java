@@ -1,8 +1,10 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Student;
+import vn.edu.ptit.PhanHoangAnh.student_management.helper.ApiResponse;
 import vn.edu.ptit.PhanHoangAnh.student_management.service.StudentService;
 import vn.edu.ptit.PhanHoangAnh.student_management.service.StudentServiceImpl;
 
@@ -19,27 +21,32 @@ public class StudentController {
     }
 
     @GetMapping({"/{id}"})
-    public Student findStudentById(@PathVariable int id) {
-        return this.studentService.findStudentById(id);
+    public ResponseEntity<ApiResponse<Student>> findStudentById(@PathVariable int id) {
+        Student student = this.studentService.findStudentById(id);
+        return ApiResponse.success(student);
     }
 
     @GetMapping()
-    public List<Student> findAllStudent() {
-        return this.studentService.findAllStudent();
+    public ResponseEntity<ApiResponse<List<Student>>> findAllStudent() {
+        List<Student> studentList = this.studentService.findAllStudent();
+        return ApiResponse.success(studentList);
     }
 
     @PostMapping("/{classId}")
-    public Student saveStudent(@PathVariable int classId, @RequestBody Student student) {
-        return this.studentService.saveStudent(classId, student);
+    public ResponseEntity<ApiResponse<Student>> saveStudent(@PathVariable int classId, @RequestBody Student student) {
+        Student studentSave = this.studentService.saveStudent(classId, student);
+        return ApiResponse.created(studentSave);
     }
 
     @PutMapping("/{id}")
-    public Student updateStudentById(@PathVariable int id, @RequestBody Student studentRq) {
-        return this.studentService.updateStudentById(id, studentRq);
+    public ResponseEntity<ApiResponse<Student>> updateStudentById(@PathVariable int id, @RequestBody Student studentRq) {
+        Student studentUpdate = this.studentService.updateStudentById(id, studentRq);
+        return ApiResponse.success(studentUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteStudentById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteStudentById(@PathVariable int id) {
         this.studentService.deleteStudentById(id);
+        return ApiResponse.success("delete success...");
     }
 }

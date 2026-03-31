@@ -1,8 +1,10 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.StudentRecord;
+import vn.edu.ptit.PhanHoangAnh.student_management.helper.ApiResponse;
 import vn.edu.ptit.PhanHoangAnh.student_management.service.StudentRecordService;
 import java.util.List;
 
@@ -18,27 +20,32 @@ public class StudentRecordController {
     }
 
     @GetMapping("/{id}")
-    public StudentRecord findStudentRecordById(@PathVariable int id) {
-        return this.studentRecordService.findStudentRecordById(id);
+    public ResponseEntity<ApiResponse<StudentRecord>> findStudentRecordById(@PathVariable int id) {
+        StudentRecord studentRecord = this.studentRecordService.findStudentRecordById(id);
+        return ApiResponse.success(studentRecord);
     }
 
     @GetMapping()
-    public List<StudentRecord> findAllStudentRecord() {
-        return this.studentRecordService.findAllStudentRecord();
+    public ResponseEntity<ApiResponse<List<StudentRecord>>> findAllStudentRecord() {
+        List<StudentRecord> studentRecordList = this.studentRecordService.findAllStudentRecord();
+        return ApiResponse.success(studentRecordList);
     }
 
     @PostMapping("/{studentId}")
-    public StudentRecord saveStudentRecord(@PathVariable int studentId, @RequestBody StudentRecord studentRecord) {
-        return this.studentRecordService.saveStudentRecord(studentId, studentRecord);
+    public ResponseEntity<ApiResponse<StudentRecord>> saveStudentRecord(@PathVariable int studentId, @RequestBody StudentRecord studentRecord) {
+        StudentRecord studentRecordSave = this.studentRecordService.saveStudentRecord(studentId, studentRecord);
+        return ApiResponse.created(studentRecordSave);
     }
 
     @PutMapping("/{id}")
-    public StudentRecord updateStudentRecordById(@PathVariable int id, @RequestBody StudentRecord studentRecord) {
-        return this.studentRecordService.updateStudentRecordById(id, studentRecord);
+    public ResponseEntity<ApiResponse<StudentRecord>> updateStudentRecordById(@PathVariable int id, @RequestBody StudentRecord studentRecord) {
+        StudentRecord studentRecordUpdate = this.studentRecordService.updateStudentRecordById(id, studentRecord);
+        return ApiResponse.success(studentRecordUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteStudentRecordById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteStudentRecordById(@PathVariable int id) {
         this.studentRecordService.deleteStudentRecordById(id);
+        return ApiResponse.success("delete success...");
     }
 }
