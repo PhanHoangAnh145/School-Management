@@ -85,9 +85,9 @@ public class UserServiceImpl implements UserService{
         this.userRepository.save(user);
     }
 
-//    @Override
+//@Override
 //    @Transactional
-//    public void assignRoleToUser(int userId, int roleId) {
+//    public void assignRoleToUser(Long userId, Long roleId) {
 //        // 1. Tìm User và Role theo ID
 //        User user = userRepository.findById(userId).orElse(null);
 //        Role role = roleRepository.findById(roleId).orElse(null);
@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService{
 //                System.out.println(">> Đã gán thành công Role " + role.getName() + " cho User " + user.getUsername());
 //            }
 //        } else {
-//            System.out.println(">> Lỗi: Không tìm thấy User ID=5 hoặc Role ID=2 trong Database!");
-//        }
-//    }
+            System.out.println(">> Lỗi: Không tìm thấy User ID=5 hoặc Role ID=2 trong Database!");
+        }
+    }
 }

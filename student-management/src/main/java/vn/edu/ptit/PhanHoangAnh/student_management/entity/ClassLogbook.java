@@ -27,7 +27,7 @@ public class ClassLogbook {
         this.clazz = clazz;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
