@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
     public User findByUsername(String Username);
 }

@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface StudentDetailService {
 
-    StudentDetail findStudentDetailById(int id);
+    StudentDetail findStudentDetailById(Long id);
 
     List<StudentDetail> findAllStudentDetail();
 
-    StudentDetail saveStudentDetail(int studentId, StudentDetail studentDetail);
+    StudentDetail saveStudentDetail(Long studentId, StudentDetail studentDetail);
 
-    StudentDetail updateStudentDetailById(int id, StudentDetail studentDetail);
+    StudentDetail updateStudentDetailById(Long id, StudentDetail studentDetail);
 
-    void deleteStudentDetailById(int id);
+    void deleteStudentDetailById(Long id);
 }

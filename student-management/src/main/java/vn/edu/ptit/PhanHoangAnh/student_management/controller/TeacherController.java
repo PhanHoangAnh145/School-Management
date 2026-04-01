@@ -20,7 +20,7 @@ public class TeacherController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Teacher>> findTeacherById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<Teacher>> findTeacherById(@PathVariable Long id) {
         Teacher teacher = this.teacherService.findTeacherById(id);
         return ApiResponse.success(teacher);
     }
@@ -32,31 +32,31 @@ public class TeacherController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<ApiResponse<Teacher>> saveTeacher(@PathVariable int id, @RequestBody Teacher teacher) {
+    public ResponseEntity<ApiResponse<Teacher>> saveTeacher(@PathVariable Long id, @RequestBody Teacher teacher) {
         Teacher teacherSave = this.teacherService.saveTeacher(id, teacher);
         return ApiResponse.created(teacherSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Teacher>> updateTeacherById(@PathVariable int id, @RequestBody  Teacher teacher) {
+    public ResponseEntity<ApiResponse<Teacher>> updateTeacherById(@PathVariable Long id, @RequestBody  Teacher teacher) {
         Teacher teacherUpdate = this.teacherService.updateTeacherById(id, teacher);
         return ApiResponse.success(teacherUpdate);
     }
 
     @PutMapping("/{id}/class")
-    public ResponseEntity<ApiResponse<Teacher>> updateTeacherByIdWithClazz(@PathVariable int id, @RequestBody Teacher teacher) {
+    public ResponseEntity<ApiResponse<Teacher>> updateTeacherByIdWithClazz(@PathVariable Long id, @RequestBody  Teacher teacher) {
         Teacher teacherUpdate = this.teacherService.updateTeacherByIdWithClazz(id, teacher);
         return ApiResponse.success(teacherUpdate);
     }
 
     @PutMapping("/{id}/subject")
-    public ResponseEntity<ApiResponse<Teacher>> updateTeacherByIdWithSubject(@PathVariable int id, @RequestBody Teacher teacher) {
+    public ResponseEntity<ApiResponse<Teacher>> updateTeacherByIdWithSubject(@PathVariable Long id, @RequestBody  Teacher teacher) {
         Teacher teacherUpdate = this.teacherService.updateTeacherByIdWithSubject(id, teacher);
         return ApiResponse.success(teacherUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteTeacherById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteTeacherById(@PathVariable Long id) {
         this.teacherService.deleteTeacherById(id);
         return ApiResponse.success("delete success...");
     }

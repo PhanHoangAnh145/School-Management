@@ -1,5 +1,6 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +23,8 @@ public class ClassServiceImpl implements ClassService{
     }
 
     @Override
-    public Clazz findClassById(int id) {
-        return this.classRepository.findById(id).orElseThrow(() -> new RuntimeException("Error"));
+    public Clazz findClassById(Long id) {
+        return this.classRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The class with id:" + id + " isn't existing"));
     }
 
     @Override
@@ -33,8 +34,8 @@ public class ClassServiceImpl implements ClassService{
 
     @Transactional
     @Override
-    public Clazz saveClass(int SchoolId, Clazz clazz) {
-        School school = this.schoolRepository.findById(SchoolId).orElseThrow(() -> new RuntimeException("Error"));
+    public Clazz saveClass(Long SchoolId, Clazz clazz) {
+        School school = this.schoolRepository.findById(SchoolId).orElseThrow(() -> new EntityNotFoundException("The school with id:" + SchoolId + " isn't existing"));
         school.addClass(clazz);
 
         return this.classRepository.save(clazz);
@@ -42,8 +43,8 @@ public class ClassServiceImpl implements ClassService{
 
     @Transactional
     @Override
-    public Clazz updateClassById(int id, Clazz clazz) {
-        Clazz clazz1 = this.classRepository.findById(id).orElseThrow(() -> new RuntimeException("Error"));
+    public Clazz updateClassById(Long id, Clazz clazz) {
+        Clazz clazz1 = this.classRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The class with id:" + id + " isn't existing"));
         clazz1.setName(clazz.getName());
         clazz1.setGrade(clazz.getGrade());
         clazz1.setYear(clazz.getYear());
@@ -53,8 +54,8 @@ public class ClassServiceImpl implements ClassService{
 
     @Transactional
     @Override
-    public void deleteClassById(int id) {
-        Clazz clazz = this.classRepository.findById(id).orElseThrow(() -> new RuntimeException("Error"));
+    public void deleteClassById(Long id) {
+        Clazz clazz = this.classRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The class with id:" + id + " isn't existing"));
         this.classRepository.delete(clazz);
     }
 }

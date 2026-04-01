@@ -20,7 +20,7 @@ public class ClassLogbookController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<ClassLogbook>> findClassLogbookById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<ClassLogbook>> findClassLogbookById(@PathVariable Long id) {
         ClassLogbook classLogbook = this.classLogbookService.findClassLogbookById(id);
         return ApiResponse.success(classLogbook);
     }
@@ -32,19 +32,19 @@ public class ClassLogbookController {
     }
 
     @PostMapping("/{classId}")
-    public ResponseEntity<ApiResponse<ClassLogbook>> saveClassLogbook(@PathVariable int classId, @RequestBody ClassLogbook classLogbook) {
+    public ResponseEntity<ApiResponse<ClassLogbook>> saveClassLogbook(@PathVariable Long classId, @RequestBody ClassLogbook classLogbook) {
         ClassLogbook classLogbookSave = this.classLogbookService.saveClassLogbook(classId, classLogbook);
         return ApiResponse.created(classLogbookSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<ClassLogbook>> updateClassLogbookById(@PathVariable int id, @RequestBody ClassLogbook classLogbook) {
+    public ResponseEntity<ApiResponse<ClassLogbook>> updateClassLogbookById(@PathVariable Long id, @RequestBody ClassLogbook classLogbook) {
         ClassLogbook classLogbookUpdate = this.classLogbookService.updateClassLogbookById(id, classLogbook);
         return ApiResponse.success(classLogbookUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteClassLogbookById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteClassLogbookById(@PathVariable Long id) {
         this.classLogbookService.deleteClassLogbookById(id);
         return ApiResponse.success("delete success...");
     }

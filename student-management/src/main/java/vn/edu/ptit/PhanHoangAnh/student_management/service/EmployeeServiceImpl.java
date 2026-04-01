@@ -1,5 +1,6 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +24,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee findEmployeeById(int id) {
-        Employee employee = this.employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Error"));
+    public Employee findEmployeeById(Long id) {
+        Employee employee = this.employeeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The employee with id:" + id + " isn't existing"));
 
         return employee;
     }
@@ -36,8 +37,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public Employee saveEmployee(int SchoolId, Employee employee) {
-        School school = this.schoolRepository. findById(SchoolId).orElseThrow(() -> new RuntimeException("Error"));
+    public Employee saveEmployee(Long SchoolId, Employee employee) {
+        School school = this.schoolRepository.findById(SchoolId).orElseThrow(() -> new EntityNotFoundException("The school with id:" + SchoolId + " isn't existing"));
 
         school.addEmployee(employee);
 
@@ -46,8 +47,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public Employee updateEmployeeById(int id, Employee employeeRq) {
-        Employee employeeDb = this.employeeRepository.findById(id).orElseThrow(() -> new RuntimeException("Error"));
+    public Employee updateEmployeeById(Long id, Employee employeeRq) {
+        Employee employeeDb = this.employeeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The employee with id:" + id + " isn't existing"));
         employeeDb.setName(employeeRq.getName());
         employeeDb.setRole(employeeRq.getRole());
 
@@ -71,8 +72,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public void deleteEmployeeById(int id) {
-        Employee employee1 = this.employeeRepository.findById(id).orElseThrow(()->new RuntimeException());
+    public void deleteEmployeeById(Long id) {
+        Employee employee1 = this.employeeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The employee with id:" + id + " isn't existing"));
         this.employeeRepository.delete(employee1);
     }
 }

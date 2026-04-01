@@ -20,7 +20,7 @@ public class TranscriptionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Transcription>> findTranscriptionById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<Transcription>> findTranscriptionById(@PathVariable Long id) {
         Transcription transcription = this.transcriptionService.findTranscriptionById(id);
         return ApiResponse.success(transcription);
     }
@@ -32,19 +32,19 @@ public class TranscriptionController {
     }
 
     @PostMapping("/{studentId}")
-    public ResponseEntity<ApiResponse<Transcription>> saveTranscription(@PathVariable int studentId, @RequestBody Transcription transcription) {
+    public ResponseEntity<ApiResponse<Transcription>> saveTranscription(@PathVariable Long studentId, @RequestBody Transcription transcription) {
         Transcription transcriptionSave = this.transcriptionService.saveTranscription(studentId, transcription);
         return ApiResponse.created(transcriptionSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Transcription>> updateTranscriptionById(@PathVariable int id, @RequestBody Transcription transcription) {
+    public ResponseEntity<ApiResponse<Transcription>> updateTranscriptionById(@PathVariable Long id, @RequestBody Transcription transcription) {
         Transcription transcriptionUpdate = this.transcriptionService.updateTranscriptionById(id, transcription);
         return ApiResponse.success(transcriptionUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteTranscriptionById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteTranscriptionById(@PathVariable Long id) {
         this.transcriptionService.deleteTranscriptionById(id);
         return ApiResponse.success("delete success...");
     }

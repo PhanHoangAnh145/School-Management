@@ -1,5 +1,6 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,8 @@ public class SchoolServiceImpl implements SchoolService{
     }
 
     @Override
-    public School findSchoolById(int id) {
-        return  this.schoolRepository.findById(id).orElseThrow(() -> new RuntimeException("The school with id:" + id + " isn't existing"));
+    public School findSchoolById(Long id) {
+        return  this.schoolRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The school with id:" + id + " isn't existing"));
     }
 
     @Override
@@ -35,8 +36,8 @@ public class SchoolServiceImpl implements SchoolService{
 
     @Transactional
     @Override
-    public School updateSchoolById(int id, School school) {
-        School updateSchool =  this.schoolRepository.findById(id).orElseThrow(() -> new RuntimeException("School with id:" + id + "isn't existing"));
+    public School updateSchoolById(Long id, School school) {
+        School updateSchool =  this.schoolRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("School with id:" + id + " isn't existing"));
         updateSchool.setName(school.getName());
         updateSchool.setPhoneNumber(school.getPhoneNumber());
         updateSchool.setAddress(school.getAddress());
@@ -47,8 +48,8 @@ public class SchoolServiceImpl implements SchoolService{
 
     @Transactional
     @Override
-    public void deleleSchoolById(int id) {
-        School updateSchool =  this.schoolRepository.findById(id).orElseThrow(() -> new RuntimeException("School with id:" + id + "isn't existing"));
+    public void deleleSchoolById(Long id) {
+        School updateSchool =  this.schoolRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("School with id:" + id + " isn't existing"));
         this.schoolRepository.delete(updateSchool);
     }
 }

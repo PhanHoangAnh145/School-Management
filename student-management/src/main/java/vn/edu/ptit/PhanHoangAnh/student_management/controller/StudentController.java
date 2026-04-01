@@ -20,8 +20,8 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping({"/{id}"})
-    public ResponseEntity<ApiResponse<Student>> findStudentById(@PathVariable int id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<Student>> findStudentById(@PathVariable Long id) {
         Student student = this.studentService.findStudentById(id);
         return ApiResponse.success(student);
     }
@@ -33,19 +33,19 @@ public class StudentController {
     }
 
     @PostMapping("/{classId}")
-    public ResponseEntity<ApiResponse<Student>> saveStudent(@PathVariable int classId, @RequestBody Student student) {
+    public ResponseEntity<ApiResponse<Student>> saveStudent(@PathVariable Long classId, @RequestBody Student student) {
         Student studentSave = this.studentService.saveStudent(classId, student);
         return ApiResponse.created(studentSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Student>> updateStudentById(@PathVariable int id, @RequestBody Student studentRq) {
+    public ResponseEntity<ApiResponse<Student>> updateStudentById(@PathVariable Long id, @RequestBody Student studentRq) {
         Student studentUpdate = this.studentService.updateStudentById(id, studentRq);
         return ApiResponse.success(studentUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteStudentById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteStudentById(@PathVariable Long id) {
         this.studentService.deleteStudentById(id);
         return ApiResponse.success("delete success...");
     }

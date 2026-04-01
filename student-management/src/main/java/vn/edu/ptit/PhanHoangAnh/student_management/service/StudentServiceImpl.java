@@ -1,5 +1,6 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,14 +28,14 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public Student findStudentById(int id) {
-        return this.studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Error"));
+    public Student findStudentById(Long id) {
+        return this.studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The student with id:" + id + " isn't existing"));
     }
 
     @Transactional
     @Override
-    public Student saveStudent(int classId, Student student) {
-        Clazz clazz = this.classRepository.findById(classId).orElseThrow(() -> new RuntimeException("Error"));
+    public Student saveStudent(Long classId, Student student) {
+        Clazz clazz = this.classRepository.findById(classId).orElseThrow(() -> new EntityNotFoundException("The class with id:" + classId + " isn't existing"));
         clazz.addStudent(student);
 
         return this.studentRepository.save(student);
@@ -42,8 +43,8 @@ public class StudentServiceImpl implements StudentService{
 
     @Transactional
     @Override
-    public Student updateStudentById(int id, Student studentRq) {
-        Student student = this.studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Error"));
+    public Student updateStudentById(Long id, Student studentRq) {
+        Student student = this.studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The student with id:" + id + " isn't existing"));
         student.setName(studentRq.getName());
         student.setDateOfBirth(studentRq.getDateOfBirth());
 
@@ -52,8 +53,8 @@ public class StudentServiceImpl implements StudentService{
 
     @Transactional
     @Override
-    public void deleteStudentById(int id) {
-        Student student = this.studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Error"));
+    public void deleteStudentById(Long id) {
+        Student student = this.studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The student with id:" + id + " isn't existing"));
         this.studentRepository.delete(student);
     }
 }

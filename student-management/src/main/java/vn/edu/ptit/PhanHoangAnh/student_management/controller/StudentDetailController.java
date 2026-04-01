@@ -21,7 +21,7 @@ public class StudentDetailController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<StudentDetail>> findStudentDetailById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<StudentDetail>> findStudentDetailById(@PathVariable Long id) {
         StudentDetail studentDetail = this.studentDetailService.findStudentDetailById(id);
         return ApiResponse.success(studentDetail);
     }
@@ -33,19 +33,19 @@ public class StudentDetailController {
     }
 
     @PostMapping("/{studentId}")
-    public ResponseEntity<ApiResponse<StudentDetail>> saveStudentDetail(@PathVariable int studentId, @RequestBody StudentDetail studentDetail) {
+    public ResponseEntity<ApiResponse<StudentDetail>> saveStudentDetail(@PathVariable Long studentId, @RequestBody StudentDetail studentDetail) {
         StudentDetail studentDetailSave = this.studentDetailService.saveStudentDetail(studentId, studentDetail);
         return ApiResponse.created(studentDetailSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<StudentDetail>> updateStudentDetailById(@PathVariable int id, @RequestBody StudentDetail studentDetail) {
+    public ResponseEntity<ApiResponse<StudentDetail>> updateStudentDetailById(@PathVariable Long id, @RequestBody StudentDetail studentDetail) {
         StudentDetail studentDetailUpdate = this.studentDetailService.updateStudentDetailById(id, studentDetail);
         return ApiResponse.success(studentDetailUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteStudentDetailById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteStudentDetailById(@PathVariable Long id) {
         this.studentDetailService.deleteStudentDetailById(id);
         return ApiResponse.success("delete success...");
     }

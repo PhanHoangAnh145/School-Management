@@ -20,7 +20,7 @@ public class GradeReportController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<GradeReport>> findGradeReportById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<GradeReport>> findGradeReportById(@PathVariable Long id) {
         GradeReport gradeReport = this.gradeReportService.findGradeReportById(id);
         return ApiResponse.success(gradeReport);
     }
@@ -32,19 +32,19 @@ public class GradeReportController {
     }
 
     @PostMapping("/{transcriptionId}")
-    public ResponseEntity<ApiResponse<GradeReport>> saveGradeReport(@PathVariable int transcriptionId, @RequestBody GradeReport gradeReport) {
+    public ResponseEntity<ApiResponse<GradeReport>> saveGradeReport(@PathVariable Long transcriptionId, @RequestBody GradeReport gradeReport) {
         GradeReport gradeReportSave = this.gradeReportService.saveGradeReport(transcriptionId, gradeReport);
         return ApiResponse.created(gradeReportSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<GradeReport>> updateGradeReportById(@PathVariable int id, @RequestBody GradeReport gradeReport) {
+    public ResponseEntity<ApiResponse<GradeReport>> updateGradeReportById(@PathVariable Long id, @RequestBody GradeReport gradeReport) {
         GradeReport gradeReportUpdate = this.gradeReportService.updateGradeReportById(id, gradeReport);
         return ApiResponse.success(gradeReportUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteGradeReportById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteGradeReportById(@PathVariable Long id) {
         this.gradeReportService.deleteGradeReportById(id);
         return ApiResponse.success("delete success...");
     }

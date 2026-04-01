@@ -23,7 +23,7 @@ public class GradeReportServiceImpl implements GradeReportService {
     }
 
     @Override
-    public GradeReport findGradeReportById(int id) {
+    public GradeReport findGradeReportById(Long id) {
         return this.gradeReportRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
     }
@@ -35,7 +35,7 @@ public class GradeReportServiceImpl implements GradeReportService {
 
     @Override
     @Transactional
-    public GradeReport saveGradeReport(int transcriptionId, GradeReport gradeReport) {
+    public GradeReport saveGradeReport(Long transcriptionId, GradeReport gradeReport) {
         Transcription transcription = this.transcriptionRepository.findById(transcriptionId)
                 .orElseThrow(() -> new RuntimeException());
         transcription.addGradeReport(gradeReport);
@@ -44,7 +44,7 @@ public class GradeReportServiceImpl implements GradeReportService {
 
     @Override
     @Transactional
-    public GradeReport updateGradeReportById(int id, GradeReport gradeReport) {
+    public GradeReport updateGradeReportById(Long id, GradeReport gradeReport) {
         GradeReport gradeReportDb = this.gradeReportRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
         gradeReportDb.setName(gradeReport.getName());
@@ -54,7 +54,7 @@ public class GradeReportServiceImpl implements GradeReportService {
 
     @Override
     @Transactional
-    public void deleteGradeReportById(int id) {
+    public void deleteGradeReportById(Long id) {
         GradeReport gradeReport = this.gradeReportRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
         this.gradeReportRepository.delete(gradeReport);

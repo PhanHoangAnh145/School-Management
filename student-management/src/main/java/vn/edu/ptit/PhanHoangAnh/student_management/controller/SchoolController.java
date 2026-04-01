@@ -1,6 +1,8 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.School;
@@ -24,10 +26,11 @@ public class SchoolController {
     public ResponseEntity<ApiResponse<List<School>>> findAllSchool() {
         List<School> schoolList =  this.schoolService.findAllSchool();
         return ApiResponse.success(schoolList);
+
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<School>> findSchoolById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<School>> findSchoolById(@PathVariable Long id) {
         School school = this.schoolService.findSchoolById(id);
         return ApiResponse.success(school);
     }
@@ -39,13 +42,13 @@ public class SchoolController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> updateSchoolById(@PathVariable int id, @RequestBody School school) {
+    public ResponseEntity<ApiResponse<String>> updateSchoolById(@PathVariable Long id, @RequestBody School school) {
         School schoolUpdate = this.schoolService.updateSchoolById(id, school);
         return ApiResponse.success("update success...");
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> deleleSchoolById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleleSchoolById(@PathVariable Long id) {
         this.schoolService.deleleSchoolById(id);
 
         return ApiResponse.success("delete success...");

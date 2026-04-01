@@ -20,7 +20,7 @@ public class ClassController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Clazz>> findClassById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<Clazz>> findClassById(@PathVariable Long id) {
         Clazz clazz = this.classService.findClassById(id);
         return ApiResponse.success(clazz);
     }
@@ -32,19 +32,19 @@ public class ClassController {
     }
 
     @PostMapping("/{schoolId}")
-    public ResponseEntity<ApiResponse<Clazz>> saveClass(@PathVariable int schoolId, @RequestBody Clazz clazz) {
+    public ResponseEntity<ApiResponse<Clazz>> saveClass(@PathVariable Long schoolId, @RequestBody Clazz clazz) {
         Clazz clazzSave = this.classService.saveClass(schoolId, clazz);
         return ApiResponse.created(clazzSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Clazz>> updateClassById(@PathVariable int id, @RequestBody Clazz clazz) {
+    public ResponseEntity<ApiResponse<Clazz>> updateClassById(@PathVariable Long id, @RequestBody Clazz clazz) {
         Clazz clazzUpdate = this.classService.updateClassById(id, clazz);
         return ApiResponse.success(clazzUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteClassById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteClassById(@PathVariable Long id) {
         this.classService.deleteClassById(id);
         return ApiResponse.success("delete success...");
     }

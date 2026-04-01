@@ -3,6 +3,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Locale;
 
@@ -12,12 +13,14 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "name")
+    @NotBlank(message = "name khong duoc de trong")
     private String name;
 
     @Column(name = "date_of_birth")
+    @NotBlank(message = "date of birth khong duoc de trong")
     private String dateOfBirth;
 
     @ManyToOne
@@ -54,11 +57,11 @@ public class Student {
         this.transcription = transcription;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -118,5 +121,9 @@ public class Student {
         this.transcription = transcription;
     }
 
+    public void addTranscription(Transcription transcription) {
+        this.setTranscription(transcription);
+        transcription.setStudent(this);
+    }
 
 }

@@ -4,9 +4,9 @@ import vn.edu.ptit.PhanHoangAnh.student_management.entity.StudentRecord;
 import java.util.List;
 
 public interface StudentRecordService {
-    StudentRecord findStudentRecordById(int id);
+    StudentRecord findStudentRecordById(Long id);
     List<StudentRecord> findAllStudentRecord();
-    StudentRecord saveStudentRecord(int studentId, StudentRecord studentRecord);
-    StudentRecord updateStudentRecordById(int id, StudentRecord studentRecord);
-    void deleteStudentRecordById(int id);
+    StudentRecord saveStudentRecord(Long studentId, StudentRecord studentRecord);
+    StudentRecord updateStudentRecordById(Long id, StudentRecord studentRecord);
+    void deleteStudentRecordById(Long id);
 }

@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Clazz;
 
 @Repository
-public interface ClassRepository extends JpaRepository<Clazz, Integer> {
+public interface ClassRepository extends JpaRepository<Clazz, Long> {
 }

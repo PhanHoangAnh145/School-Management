@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.School;
 
 @Repository
-public interface SchoolRepository extends JpaRepository<School, Integer> {
+public interface SchoolRepository extends JpaRepository<School, Long> {
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public class Teacher{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToMany
     @JoinTable(
@@ -40,7 +40,7 @@ public class Teacher{
     public Teacher() {
     }
 
-    public Teacher(int id, List<Clazz> clazzList, List<Subject> subjectList, Employee employee) {
+    public Teacher(Long id, List<Clazz> clazzList, List<Subject> subjectList, Employee employee) {
         this.id = id;
         this.clazzList = clazzList;
         this.subjectList = subjectList;
@@ -63,11 +63,11 @@ public class Teacher{
         this.subjectList = subjectList;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -20,7 +20,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Employee>> findEmployeeById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<Employee>> findEmployeeById(@PathVariable Long id) {
         Employee employee = this.employeeService.findEmployeeById(id);
         return ApiResponse.success(employee);
     }
@@ -32,19 +32,19 @@ public class EmployeeController {
     }
 
     @PostMapping("/{schoolId}")
-    public ResponseEntity<ApiResponse<Employee>> saveEmployee(@PathVariable int schoolId, @RequestBody Employee employee) {
+    public ResponseEntity<ApiResponse<Employee>> saveEmployee(@PathVariable Long schoolId, @RequestBody Employee employee) {
         Employee employeeSave = this.employeeService.saveEmployee(schoolId, employee);
         return ApiResponse.created(employeeSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Employee>> updateEmployeeById(@PathVariable int id, @RequestBody Employee employee) {
+    public ResponseEntity<ApiResponse<Employee>> updateEmployeeById(@PathVariable Long id, @RequestBody Employee employee) {
         Employee employeeUpdate = this.employeeService.updateEmployeeById(id, employee);
         return ApiResponse.success(employeeUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteEmployeeById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteEmployeeById(@PathVariable Long id) {
         this.employeeService.deleteEmployeeById(id);
         return ApiResponse.success("delete success...");
     }

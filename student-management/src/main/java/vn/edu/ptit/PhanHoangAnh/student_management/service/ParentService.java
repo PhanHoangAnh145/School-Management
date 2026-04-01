@@ -4,9 +4,9 @@ import vn.edu.ptit.PhanHoangAnh.student_management.entity.Parent;
 import java.util.List;
 
 public interface ParentService {
-    Parent findParentById(int id);
+    Parent findParentById(Long id);
     List<Parent> findAllParent();
-    Parent saveParent(int studentId, Parent parent);
-    Parent updateParentById(int id, Parent parent);
-    void deleteParentById(int id);
+    Parent saveParent(Long studentId, Parent parent);
+    Parent updateParentById(Long id, Parent parent);
+    void deleteParentById(Long id);
 }

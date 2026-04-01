@@ -2,6 +2,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,17 +13,21 @@ public class School {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "name")
+    @NotBlank(message = "name khong duoc de trong")
     private String name;
 
+    @NotBlank(message = "phone number khong duoc de trong")
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @NotBlank(message = "address khong duoc de trong")
     @Column(name = "address")
     private String address;
 
+    @NotBlank(message = "grade khong duoc de trong")
     @Column(name = "grade")
     private int grade;
 
@@ -46,11 +51,11 @@ public class School {
         this.employeeList = employeeList;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

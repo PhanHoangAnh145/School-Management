@@ -23,7 +23,7 @@ public class EmployeeDetailServiceImpl implements EmployeeDetailService {
     }
 
     @Override
-    public EmployeeDetail findEmployeeDetailById(int id) {
+    public EmployeeDetail findEmployeeDetailById(Long id) {
         return this.employeeDetailRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
     }
@@ -35,7 +35,7 @@ public class EmployeeDetailServiceImpl implements EmployeeDetailService {
 
     @Override
     @Transactional
-    public EmployeeDetail saveEmployeeDetail(int employeeId, EmployeeDetail employeeDetail) {
+    public EmployeeDetail saveEmployeeDetail(Long employeeId, EmployeeDetail employeeDetail) {
         Employee employee = this.employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new RuntimeException());
         employee.setEmployeeDetail(employeeDetail);
@@ -45,7 +45,7 @@ public class EmployeeDetailServiceImpl implements EmployeeDetailService {
 
     @Override
     @Transactional
-    public EmployeeDetail updateEmployeeDetailById(int id, EmployeeDetail employeeDetail) {
+    public EmployeeDetail updateEmployeeDetailById(Long id, EmployeeDetail employeeDetail) {
         EmployeeDetail employeeDetailDb = this.employeeDetailRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
         employeeDetailDb.setAddress(employeeDetail.getAddress());
@@ -56,7 +56,7 @@ public class EmployeeDetailServiceImpl implements EmployeeDetailService {
 
     @Override
     @Transactional
-    public void deleteEmployeeDetailById(int id) {
+    public void deleteEmployeeDetailById(Long id) {
         EmployeeDetail employeeDetail = this.employeeDetailRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
         this.employeeDetailRepository.delete(employeeDetail);

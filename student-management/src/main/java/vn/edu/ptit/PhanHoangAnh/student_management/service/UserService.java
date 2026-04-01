@@ -10,5 +10,5 @@ public interface UserService extends UserDetailsService {
     public Role getOrCreateRole(String roleName);
     public void register(User user);
     public void createUserByAdmin(User user, String role);
-//    public void assignRoleToUser(int userId, int roleId);
+    public void assignRoleToUser(Long userId, Long roleId);
 }

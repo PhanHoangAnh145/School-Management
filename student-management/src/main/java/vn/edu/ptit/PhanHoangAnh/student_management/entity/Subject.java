@@ -2,6 +2,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
@@ -11,9 +12,10 @@ public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     @Column(name = "name")
+    @NotBlank(message = "name khong duoc de trong")
     private String name;
 
     @ManyToMany(mappedBy = "subjectList")
@@ -23,16 +25,17 @@ public class Subject {
     public Subject() {
     }
 
-    public Subject(String name, List<Teacher> teacherList) {
+    public Subject(Long id, String name, List<Teacher> teacherList) {
+        this.id = id;
         this.name = name;
         this.teacherList = teacherList;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

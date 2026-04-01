@@ -4,9 +4,9 @@ import vn.edu.ptit.PhanHoangAnh.student_management.entity.EmployeeDetail;
 import java.util.List;
 
 public interface EmployeeDetailService {
-    EmployeeDetail findEmployeeDetailById(int id);
+    EmployeeDetail findEmployeeDetailById(Long id);
     List<EmployeeDetail> findAllEmployeeDetail();
-    EmployeeDetail saveEmployeeDetail(int employeeId, EmployeeDetail employeeDetail);
-    EmployeeDetail updateEmployeeDetailById(int id, EmployeeDetail employeeDetail);
-    void deleteEmployeeDetailById(int id);
+    EmployeeDetail saveEmployeeDetail(Long employeeId, EmployeeDetail employeeDetail);
+    EmployeeDetail updateEmployeeDetailById(Long id, EmployeeDetail employeeDetail);
+    void deleteEmployeeDetailById(Long id);
 }

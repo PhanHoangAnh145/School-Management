@@ -20,7 +20,7 @@ public class ParentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Parent>> findParentById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<Parent>> findParentById(@PathVariable Long id) {
         Parent parent = this.parentService.findParentById(id);
         return ApiResponse.success(parent);
     }
@@ -32,19 +32,19 @@ public class ParentController {
     }
 
     @PostMapping("/{studentId}")
-    public ResponseEntity<ApiResponse<Parent>> saveParent(@PathVariable int studentId, @RequestBody Parent parent) {
+    public ResponseEntity<ApiResponse<Parent>> saveParent(@PathVariable Long studentId, @RequestBody Parent parent) {
         Parent parentSave = this.parentService.saveParent(studentId, parent);
         return ApiResponse.created(parentSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Parent>> updateParentById(@PathVariable int id, @RequestBody Parent parent) {
+    public ResponseEntity<ApiResponse<Parent>> updateParentById(@PathVariable Long id, @RequestBody Parent parent) {
         Parent parentUpdate = this.parentService.updateParentById(id, parent);
         return ApiResponse.success(parentUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteParentById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteParentById(@PathVariable Long id) {
         this.parentService.deleteParentById(id);
         return ApiResponse.success("delete success...");
     }

@@ -23,7 +23,7 @@ public class TranscriptionServiceImpl implements TranscriptionService {
     }
 
     @Override
-    public Transcription findTranscriptionById(int id) {
+    public Transcription findTranscriptionById(Long id) {
         return this.transcriptionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
     }
@@ -35,17 +35,17 @@ public class TranscriptionServiceImpl implements TranscriptionService {
 
     @Override
     @Transactional
-    public Transcription saveTranscription(int studentId, Transcription transcription) {
+    public Transcription saveTranscription(Long studentId, Transcription transcription) {
         Student student = this.studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException());
-        student.setTranscription(transcription);
-        transcription.setStudent(student);
+        student.addTranscription(transcription);
+
         return this.transcriptionRepository.save(transcription);
     }
 
     @Override
     @Transactional
-    public Transcription updateTranscriptionById(int id, Transcription transcription) {
+    public Transcription updateTranscriptionById(Long id, Transcription transcription) {
         Transcription transcriptionDb = this.transcriptionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
         transcriptionDb.setYear(transcription.getYear());
@@ -56,7 +56,7 @@ public class TranscriptionServiceImpl implements TranscriptionService {
 
     @Override
     @Transactional
-    public void deleteTranscriptionById(int id) {
+    public void deleteTranscriptionById(Long id) {
         Transcription transcription = this.transcriptionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
         this.transcriptionRepository.delete(transcription);

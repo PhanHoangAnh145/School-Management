@@ -23,7 +23,7 @@ public class StudentRecordServiceImpl implements StudentRecordService {
     }
 
     @Override
-    public StudentRecord findStudentRecordById(int id) {
+    public StudentRecord findStudentRecordById(Long id) {
         return this.studentRecordRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
     }
@@ -35,7 +35,7 @@ public class StudentRecordServiceImpl implements StudentRecordService {
 
     @Override
     @Transactional
-    public StudentRecord saveStudentRecord(int studentId, StudentRecord studentRecord) {
+    public StudentRecord saveStudentRecord(Long studentId, StudentRecord studentRecord) {
         Student student = this.studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException());
         student.setStudentRecord(studentRecord);
@@ -45,7 +45,7 @@ public class StudentRecordServiceImpl implements StudentRecordService {
 
     @Override
     @Transactional
-    public StudentRecord updateStudentRecordById(int id, StudentRecord studentRecord) {
+    public StudentRecord updateStudentRecordById(Long id, StudentRecord studentRecord) {
         StudentRecord studentRecordDb = this.studentRecordRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
         studentRecordDb.setDescription(studentRecord.getDescription());
@@ -54,7 +54,7 @@ public class StudentRecordServiceImpl implements StudentRecordService {
 
     @Override
     @Transactional
-    public void deleteStudentRecordById(int id) {
+    public void deleteStudentRecordById(Long id) {
         StudentRecord studentRecord = this.studentRecordRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
         this.studentRecordRepository.delete(studentRecord);

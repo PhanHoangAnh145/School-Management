@@ -1,5 +1,6 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +24,9 @@ public class ParentServiceImpl implements ParentService {
     }
 
     @Override
-    public Parent findParentById(int id) {
+    public Parent findParentById(Long id) {
         return this.parentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(() -> new EntityNotFoundException("The parent with id:" + id + " isn't existing"));
     }
 
     @Override
@@ -35,9 +36,9 @@ public class ParentServiceImpl implements ParentService {
 
     @Override
     @Transactional
-    public Parent saveParent(int studentId, Parent parent) {
+    public Parent saveParent(Long studentId, Parent parent) {
         Student student = this.studentRepository.findById(studentId)
-                .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(() -> new EntityNotFoundException("The student with id:" + studentId + " isn't existing"));
         student.setParent(parent);
         parent.setStudent(student);
         return this.parentRepository.save(parent);
@@ -45,9 +46,9 @@ public class ParentServiceImpl implements ParentService {
 
     @Override
     @Transactional
-    public Parent updateParentById(int id, Parent parent) {
+    public Parent updateParentById(Long id, Parent parent) {
         Parent parentDb = this.parentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(() -> new EntityNotFoundException("The parent with id:" + id + " isn't existing"));
         parentDb.setName(parent.getName());
         parentDb.setAddress(parent.getAddress());
         parentDb.setPhoneNumber(parent.getPhoneNumber());
@@ -56,9 +57,9 @@ public class ParentServiceImpl implements ParentService {
 
     @Override
     @Transactional
-    public void deleteParentById(int id) {
+    public void deleteParentById(Long id) {
         Parent parent = this.parentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException());
+                .orElseThrow(() -> new EntityNotFoundException("The parent with id:" + id + " isn't existing"));
         this.parentRepository.delete(parent);
     }
 }

@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.ClassLogbook;
 
 @Repository
-public interface ClassLogbookRepository extends JpaRepository<ClassLogbook, Integer> {
+public interface ClassLogbookRepository extends JpaRepository<ClassLogbook, Long> {
 }

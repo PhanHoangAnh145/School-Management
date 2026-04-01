@@ -3,6 +3,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +14,10 @@ public class Clazz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    public int id;
+    private Long id;
 
     @Column(name = "name")
+    @NotBlank(message = "name khong duoc de trong")
     private String name;
 
     @Column(name = "grade")
@@ -54,7 +56,7 @@ public class Clazz {
         this.studentList = studentList;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -86,7 +88,7 @@ public class Clazz {
         return studentList;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

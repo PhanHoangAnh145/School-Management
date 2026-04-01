@@ -23,7 +23,7 @@ public class ClassLogbookServiceImpl implements ClassLogbookService {
     }
 
     @Override
-    public ClassLogbook findClassLogbookById(int id) {
+    public ClassLogbook findClassLogbookById(Long id) {
         return this.classLogbookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
     }
@@ -35,7 +35,7 @@ public class ClassLogbookServiceImpl implements ClassLogbookService {
 
     @Override
     @Transactional
-    public ClassLogbook saveClassLogbook(int classId, ClassLogbook classLogbook) {
+    public ClassLogbook saveClassLogbook(Long classId, ClassLogbook classLogbook) {
         Clazz clazz = this.classRepository.findById(classId)
                 .orElseThrow(() -> new RuntimeException());
         clazz.setClassLogbook(classLogbook);
@@ -45,7 +45,7 @@ public class ClassLogbookServiceImpl implements ClassLogbookService {
 
     @Override
     @Transactional
-    public ClassLogbook updateClassLogbookById(int id, ClassLogbook classLogbook) {
+    public ClassLogbook updateClassLogbookById(Long id, ClassLogbook classLogbook) {
         ClassLogbook classLogbookDb = this.classLogbookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
         classLogbookDb.setDescription(classLogbook.getDescription());
@@ -54,7 +54,7 @@ public class ClassLogbookServiceImpl implements ClassLogbookService {
 
     @Override
     @Transactional
-    public void deleteClassLogbookById(int id) {
+    public void deleteClassLogbookById(Long id) {
         ClassLogbook classLogbook = this.classLogbookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
         this.classLogbookRepository.delete(classLogbook);

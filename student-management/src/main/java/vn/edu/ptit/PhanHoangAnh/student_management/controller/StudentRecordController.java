@@ -20,7 +20,7 @@ public class StudentRecordController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<StudentRecord>> findStudentRecordById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<StudentRecord>> findStudentRecordById(@PathVariable Long id) {
         StudentRecord studentRecord = this.studentRecordService.findStudentRecordById(id);
         return ApiResponse.success(studentRecord);
     }
@@ -32,19 +32,19 @@ public class StudentRecordController {
     }
 
     @PostMapping("/{studentId}")
-    public ResponseEntity<ApiResponse<StudentRecord>> saveStudentRecord(@PathVariable int studentId, @RequestBody StudentRecord studentRecord) {
+    public ResponseEntity<ApiResponse<StudentRecord>> saveStudentRecord(@PathVariable Long studentId, @RequestBody StudentRecord studentRecord) {
         StudentRecord studentRecordSave = this.studentRecordService.saveStudentRecord(studentId, studentRecord);
         return ApiResponse.created(studentRecordSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<StudentRecord>> updateStudentRecordById(@PathVariable int id, @RequestBody StudentRecord studentRecord) {
+    public ResponseEntity<ApiResponse<StudentRecord>> updateStudentRecordById(@PathVariable Long id, @RequestBody StudentRecord studentRecord) {
         StudentRecord studentRecordUpdate = this.studentRecordService.updateStudentRecordById(id, studentRecord);
         return ApiResponse.success(studentRecordUpdate);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteStudentRecordById(@PathVariable int id) {
+    public ResponseEntity<ApiResponse<String>> deleteStudentRecordById(@PathVariable Long id) {
         this.studentRecordService.deleteStudentRecordById(id);
         return ApiResponse.success("delete success...");
     }

@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.StudentDetail;
 
 @Repository
-public interface StudentDetailRepository extends JpaRepository<StudentDetail, Integer> {
+public interface StudentDetailRepository extends JpaRepository<StudentDetail, Long> {
 
 }

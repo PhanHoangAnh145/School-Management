@@ -24,7 +24,7 @@ public class StudentDetailServiceImpl implements StudentDetailService {
     }
 
     @Override
-    public StudentDetail findStudentDetailById(int id) {
+    public StudentDetail findStudentDetailById(Long id) {
         return this.studentDetailRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
     }
@@ -36,7 +36,7 @@ public class StudentDetailServiceImpl implements StudentDetailService {
 
     @Override
     @Transactional
-    public StudentDetail saveStudentDetail(int studentId, StudentDetail studentDetail) {
+    public StudentDetail saveStudentDetail(Long studentId, StudentDetail studentDetail) {
         Student student = this.studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException());
         student.setStudentDetail(studentDetail);
@@ -46,7 +46,7 @@ public class StudentDetailServiceImpl implements StudentDetailService {
 
     @Override
     @Transactional
-    public StudentDetail updateStudentDetailById(int id, StudentDetail studentDetail) {
+    public StudentDetail updateStudentDetailById(Long id, StudentDetail studentDetail) {
         StudentDetail studentDetailDb = this.studentDetailRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
 
@@ -60,7 +60,7 @@ public class StudentDetailServiceImpl implements StudentDetailService {
 
     @Override
     @Transactional
-    public void deleteStudentDetailById(int id) {
+    public void deleteStudentDetailById(Long id) {
         StudentDetail studentDetail = this.studentDetailRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
         this.studentDetailRepository.delete(studentDetail);

@@ -1,5 +1,6 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +23,8 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    public Subject findSubjectById(int id) {
-        return this.subjectRepository.findById(id).orElseThrow(()-> new RuntimeException());
+    public Subject findSubjectById(Long id) {
+        return this.subjectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The subject with id:" + id + " isn't existing"));
     }
 
     @Override
@@ -33,8 +34,8 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional
-    public Subject saveSubject(int TeacherId, Subject subject) {
-        Teacher teacher = this.teacherRepository.findById(TeacherId).orElseThrow(()->new RuntimeException());
+    public Subject saveSubject(Long TeacherId, Subject subject) {
+        Teacher teacher = this.teacherRepository.findById(TeacherId).orElseThrow(() -> new EntityNotFoundException("The teacher with id:" + TeacherId + " isn't existing"));
         teacher.addSubject(subject);
 
         return this.subjectRepository.save(subject);
@@ -42,8 +43,8 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional
-    public Subject updateSubjectById(int id, Subject subjectRq) {
-        Subject subjectDb = this.subjectRepository.findById(id).orElseThrow(()-> new RuntimeException());
+    public Subject updateSubjectById(Long id, Subject subjectRq) {
+        Subject subjectDb = this.subjectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The subject with id:" + id + " isn't existing"));
         subjectDb.setName(subjectRq.getName());
 
         return this.subjectRepository.saveAndFlush(subjectDb);
@@ -51,8 +52,8 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional
-    public void deleteSubjectById(int id) {
-        Subject subject = this.subjectRepository.findById(id).orElseThrow(() -> new RuntimeException());
+    public void deleteSubjectById(Long id) {
+        Subject subject = this.subjectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The subject with id:" + id + " isn't existing"));
         this.subjectRepository.delete(subject);
     }
 }

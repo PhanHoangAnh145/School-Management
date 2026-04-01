@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Transcription;
 
 @Repository
-public interface TranscriptionRepository extends JpaRepository<Transcription, Integer> {
+public interface TranscriptionRepository extends JpaRepository<Transcription, Long> {
 }
