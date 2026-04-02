@@ -1,5 +1,6 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.RoleRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.UserRepository;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.UserResponseDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Role;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.User;
+import vn.edu.ptit.PhanHoangAnh.student_management.mapper.UserMapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,11 +26,13 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private UserMapper userMapper;
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder ,UserMapper userMapper) {
         this.userRepository =  userRepository;
         this.roleRepository =  roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userMapper = userMapper;
     }
 
     @Override
@@ -85,7 +90,33 @@ public class UserServiceImpl implements UserService{
         this.userRepository.save(user);
     }
 
-//@Override
+    @Override
+    public UserResponseDTO findUserById(Long id) {
+        return userMapper.toDTO(this.userRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Khong tim thay user co id:" + id)));
+    }
+
+    @Override
+    public List<UserResponseDTO> findAllUser() {
+        return this.userRepository.findAll()
+                .stream()
+                .map(user -> userMapper.toDTO(user))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserResponseDTO updateUserById(Long id, User user) {
+        User userDb = this.userRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Khong tim thay user co id:" + id));
+        userDb.setUsername(user.getUsername());
+        userDb.setPassword(bCryptPasswordEncoder.encode(userDb.getPassword()));
+        userDb.setEnabled(true);
+        userDb.setFirstname(user.getFirstname());
+        userDb.setLastname(user.getLastname());
+        userDb.setEmail(user.getEmail());
+        userDb.setAvatar(user.getAvatar());
+        return userMapper.toDTO(userDb);
+    }
+
+    //    @Override
 //    @Transactional
 //    public void assignRoleToUser(Long userId, Long roleId) {
 //        // 1. Tìm User và Role theo ID
@@ -107,7 +138,7 @@ public class UserServiceImpl implements UserService{
 //                System.out.println(">> Đã gán thành công Role " + role.getName() + " cho User " + user.getUsername());
 //            }
 //        } else {
-//            System.out.println(">> Lỗi: Không tìm thấy User ID=5 hoặc Role ID=2 trong Database!");
+//            System.out.println(">> Lỗi: Không tìm thấy User ID=" + userId + " hoặc Role ID=" + roleId + " trong Database!");
 //        }
 //    }
 }
