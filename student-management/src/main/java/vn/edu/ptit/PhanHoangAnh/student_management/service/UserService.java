@@ -7,7 +7,7 @@ import vn.edu.ptit.PhanHoangAnh.student_management.entity.User;
 
 import java.util.List;
 
-public interface UserService extends UserDetailsService {
+public interface UserService {
     public User findUserByUsername(String username);
     public void saveUser(User user);
     public Role getOrCreateRole(String roleName);

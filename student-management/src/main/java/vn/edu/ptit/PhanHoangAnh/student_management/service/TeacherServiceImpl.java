@@ -52,7 +52,6 @@ public class TeacherServiceImpl implements TeacherService {
     @Transactional
     public Teacher updateTeacherById(Long id, Teacher teacher) {
         Teacher teacherDb = this.teacherRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The teacher with id:" + id + " isn't existing"));
-        // TODO: Implement update logic here
         return this.teacherRepository.save(teacherDb);
     }
 

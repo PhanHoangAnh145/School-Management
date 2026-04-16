@@ -45,19 +45,6 @@ public class UserServiceImpl implements UserService{
         this.userRepository.save(user);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = this.userRepository.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("Invalid username.....");
-        }
-
-            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), rolesToAuthorities(user.getRoleCollection()));
-    }
-
-    private Collection<? extends GrantedAuthority> rolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
-    }
 
     @Override
     public Role getOrCreateRole(String roleName) {
@@ -116,7 +103,7 @@ public class UserServiceImpl implements UserService{
         return userMapper.toDTO(userDb);
     }
 
-    //    @Override
+//        @Override
 //    @Transactional
 //    public void assignRoleToUser(Long userId, Long roleId) {
 //        // 1. Tìm User và Role theo ID

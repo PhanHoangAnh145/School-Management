@@ -18,7 +18,7 @@ public class StudentManagementSystemApplication {
 //            System.out.println("--- Bắt đầu tiến trình gán quyền tự động ---");
 //
 //            // Gọi hàm gán User ID = 5 với Role ID = 2
-//            userService.assignRoleToUser(5, 2);
+//            userService.assignRoleToUser(1L, 3L);
 //
 //            System.out.println("--- Kết thúc tiến trình ---");
 //        };

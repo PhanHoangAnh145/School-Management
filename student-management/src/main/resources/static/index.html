@@ -173,7 +173,7 @@
 
                 <!-- Page Content -->
                 <div id="content-area" class="main-content">
-                    
+
                     <!-- Dashboard Page -->
                     <div id="dashboard-page" class="page-section">
                         <div class="row">
@@ -489,12 +489,12 @@
         function showPage(pageId) {
             document.querySelectorAll('.page-section').forEach(p => p.classList.add('d-none'));
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            
+
             const selectedPage = document.getElementById(pageId + '-page');
             if (selectedPage) {
                 selectedPage.classList.remove('d-none');
                 document.getElementById('nav-' + pageId).classList.add('active');
-                
+
                 const titles = {
                     'dashboard': 'Tổng quan hệ thống',
                     'students': 'Quản lý Sinh viên',
@@ -503,7 +503,7 @@
                     'subjects': 'Quản lý Môn học'
                 };
                 document.getElementById('page-title').innerText = titles[pageId] || 'Hệ thống Quản lý';
-                
+
                 if (pageId === 'students') loadStudents();
                 if (pageId === 'classes') loadClasses();
                 if (pageId === 'teachers') loadTeachers();
@@ -553,7 +553,7 @@
             document.getElementById('classSelectDiv').classList.remove('d-none');
             const classes = await fetch(`${API_BASE_URL}/class`).then(r => r.json());
             const classSelect = document.getElementById('studentClass');
-            classSelect.innerHTML = '<option value="">Chọn lớp học...</option>' + 
+            classSelect.innerHTML = '<option value="">Chọn lớp học...</option>' +
                 classes.map(c => `<option value="${c.id}">${c.className}</option>`).join('');
             new bootstrap.Modal(document.getElementById('studentModal')).show();
         }
@@ -683,7 +683,7 @@
                     address: document.getElementById('teacherAddress').value
                 }
             };
-            
+
             try {
                 const empRes = await fetch(`${API_BASE_URL}/employee/1`, {
                     method: 'POST',
