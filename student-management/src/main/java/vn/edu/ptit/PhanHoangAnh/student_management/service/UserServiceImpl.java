@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService{
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         List<Role> roles = new ArrayList<>();
         roles.add(getOrCreateRole("ROLE_STUDENT"));
-
+        user.setEnabled(true);
         user.setRoleCollection(roles);
         this.userRepository.save(user);
     }

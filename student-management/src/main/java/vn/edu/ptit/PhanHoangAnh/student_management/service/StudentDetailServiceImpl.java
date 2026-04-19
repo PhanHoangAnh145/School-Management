@@ -5,48 +5,63 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.StudentDetailRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.StudentRepository;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.StudentDetailDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Student;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.StudentDetail;
+import vn.edu.ptit.PhanHoangAnh.student_management.mapper.StudentMapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentDetailServiceImpl implements StudentDetailService {
 
     private StudentDetailRepository studentDetailRepository;
     private StudentRepository studentRepository;
+    private StudentMapper studentMapper;
 
     @Autowired
     public StudentDetailServiceImpl(StudentDetailRepository studentDetailRepository,
-                                    StudentRepository studentRepository) {
+                                    StudentRepository studentRepository, StudentMapper studentMapper) {
         this.studentDetailRepository = studentDetailRepository;
         this.studentRepository = studentRepository;
+        this.studentMapper = studentMapper;
     }
 
     @Override
-    public StudentDetail findStudentDetailById(Long id) {
-        return this.studentDetailRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException());
+    public StudentDetailDTO findStudentDetailById(Long id) {
+        return studentMapper.toDetailDTO(this.studentDetailRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException()));
     }
 
     @Override
-    public List<StudentDetail> findAllStudentDetail() {
-        return this.studentDetailRepository.findAll();
+    public StudentDetailDTO findByStudentId(Long studentId) {
+        return this.studentDetailRepository.findByStudentId(studentId)
+                .map(studentMapper::toDetailDTO)
+                .orElse(null);
+    }
+
+    @Override
+    public List<StudentDetailDTO> findAllStudentDetail() {
+        return this.studentDetailRepository.findAll()
+                .stream()
+                .map(studentDetail -> studentMapper.toDetailDTO(studentDetail))
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public StudentDetail saveStudentDetail(Long studentId, StudentDetail studentDetail) {
+    public StudentDetailDTO saveStudentDetail(Long studentId, StudentDetail studentDetail) {
         Student student = this.studentRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException());
         student.setStudentDetail(studentDetail);
         studentDetail.setStudent(student);
-        return this.studentDetailRepository.save(studentDetail);
+        return studentMapper.toDetailDTO(this.studentDetailRepository.save(studentDetail));
     }
 
     @Override
     @Transactional
-    public StudentDetail updateStudentDetailById(Long id, StudentDetail studentDetail) {
+    public StudentDetailDTO updateStudentDetailById(Long id, StudentDetail studentDetail) {
         StudentDetail studentDetailDb = this.studentDetailRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
 
@@ -55,7 +70,7 @@ public class StudentDetailServiceImpl implements StudentDetailService {
         studentDetailDb.setHobby(studentDetail.getHobby());
         studentDetailDb.setAvatar(studentDetail.getAvatar());
 
-        return this.studentDetailRepository.save(studentDetailDb);
+        return studentMapper.toDetailDTO(this.studentDetailRepository.save(studentDetailDb));
     }
 
     @Override

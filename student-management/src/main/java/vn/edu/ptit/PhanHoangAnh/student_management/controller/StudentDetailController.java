@@ -3,6 +3,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.StudentDetailDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.StudentDetail;
 import vn.edu.ptit.PhanHoangAnh.student_management.helper.ApiResponse;
 import vn.edu.ptit.PhanHoangAnh.student_management.service.StudentDetailService;
@@ -21,26 +22,26 @@ public class StudentDetailController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<StudentDetail>> findStudentDetailById(@PathVariable Long id) {
-        StudentDetail studentDetail = this.studentDetailService.findStudentDetailById(id);
+    public ResponseEntity<ApiResponse<StudentDetailDTO>> findStudentDetailById(@PathVariable Long id) {
+        StudentDetailDTO studentDetail = this.studentDetailService.findByStudentId(id);
         return ApiResponse.success(studentDetail);
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<List<StudentDetail>>> findAllStudentDetail() {
-        List<StudentDetail> studentDetailList = this.studentDetailService.findAllStudentDetail();
+    public ResponseEntity<ApiResponse<List<StudentDetailDTO>>> findAllStudentDetail() {
+        List<StudentDetailDTO> studentDetailList = this.studentDetailService.findAllStudentDetail();
         return ApiResponse.success(studentDetailList);
     }
 
     @PostMapping("/{studentId}")
-    public ResponseEntity<ApiResponse<StudentDetail>> saveStudentDetail(@PathVariable Long studentId, @RequestBody StudentDetail studentDetail) {
-        StudentDetail studentDetailSave = this.studentDetailService.saveStudentDetail(studentId, studentDetail);
+    public ResponseEntity<ApiResponse<StudentDetailDTO>> saveStudentDetail(@PathVariable Long studentId, @RequestBody StudentDetail studentDetail) {
+        StudentDetailDTO studentDetailSave = this.studentDetailService.saveStudentDetail(studentId, studentDetail);
         return ApiResponse.created(studentDetailSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<StudentDetail>> updateStudentDetailById(@PathVariable Long id, @RequestBody StudentDetail studentDetail) {
-        StudentDetail studentDetailUpdate = this.studentDetailService.updateStudentDetailById(id, studentDetail);
+    public ResponseEntity<ApiResponse<StudentDetailDTO>> updateStudentDetailById(@PathVariable Long id, @RequestBody StudentDetail studentDetail) {
+        StudentDetailDTO studentDetailUpdate = this.studentDetailService.updateStudentDetailById(id, studentDetail);
         return ApiResponse.success(studentDetailUpdate);
     }
 

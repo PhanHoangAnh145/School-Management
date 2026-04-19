@@ -3,6 +3,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.StudentResponseDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Student;
 import vn.edu.ptit.PhanHoangAnh.student_management.helper.ApiResponse;
 import vn.edu.ptit.PhanHoangAnh.student_management.service.StudentService;
@@ -21,26 +22,26 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Student>> findStudentById(@PathVariable Long id) {
-        Student student = this.studentService.findStudentById(id);
+    public ResponseEntity<ApiResponse<StudentResponseDTO>> findStudentById(@PathVariable Long id) {
+        StudentResponseDTO student = this.studentService.findStudentById(id);
         return ApiResponse.success(student);
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<List<Student>>> findAllStudent() {
-        List<Student> studentList = this.studentService.findAllStudent();
+    public ResponseEntity<ApiResponse<List<StudentResponseDTO>>> findAllStudent() {
+        List<StudentResponseDTO> studentList = this.studentService.findAllStudent();
         return ApiResponse.success(studentList);
     }
 
     @PostMapping("/{classId}")
-    public ResponseEntity<ApiResponse<Student>> saveStudent(@PathVariable Long classId, @RequestBody Student student) {
-        Student studentSave = this.studentService.saveStudent(classId, student);
+    public ResponseEntity<ApiResponse<StudentResponseDTO>> saveStudent(@PathVariable Long classId, @RequestBody Student student) {
+        StudentResponseDTO studentSave = this.studentService.saveStudent(classId, student);
         return ApiResponse.created(studentSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Student>> updateStudentById(@PathVariable Long id, @RequestBody Student studentRq) {
-        Student studentUpdate = this.studentService.updateStudentById(id, studentRq);
+    public ResponseEntity<ApiResponse<StudentResponseDTO>> updateStudentById(@PathVariable Long id, @RequestBody Student studentRq) {
+        StudentResponseDTO studentUpdate = this.studentService.updateStudentById(id, studentRq);
         return ApiResponse.success(studentUpdate);
     }
 

@@ -3,6 +3,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.TranscriptionResponseDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Transcription;
 import vn.edu.ptit.PhanHoangAnh.student_management.helper.ApiResponse;
 import vn.edu.ptit.PhanHoangAnh.student_management.service.TranscriptionService;
@@ -20,26 +21,26 @@ public class TranscriptionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Transcription>> findTranscriptionById(@PathVariable Long id) {
-        Transcription transcription = this.transcriptionService.findTranscriptionById(id);
+    public ResponseEntity<ApiResponse<TranscriptionResponseDTO>> findTranscriptionById(@PathVariable Long id) {
+        TranscriptionResponseDTO transcription = this.transcriptionService.findByStudentId(id);
         return ApiResponse.success(transcription);
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<List<Transcription>>> findAllTranscription() {
-        List<Transcription> transcriptionList = this.transcriptionService.findAllTranscription();
+    public ResponseEntity<ApiResponse<List<TranscriptionResponseDTO>>> findAllTranscription() {
+        List<TranscriptionResponseDTO> transcriptionList = this.transcriptionService.findAllTranscription();
         return ApiResponse.success(transcriptionList);
     }
 
     @PostMapping("/{studentId}")
-    public ResponseEntity<ApiResponse<Transcription>> saveTranscription(@PathVariable Long studentId, @RequestBody Transcription transcription) {
-        Transcription transcriptionSave = this.transcriptionService.saveTranscription(studentId, transcription);
+    public ResponseEntity<ApiResponse<TranscriptionResponseDTO>> saveTranscription(@PathVariable Long studentId, @RequestBody Transcription transcription) {
+        TranscriptionResponseDTO transcriptionSave = this.transcriptionService.saveTranscription(studentId, transcription);
         return ApiResponse.created(transcriptionSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Transcription>> updateTranscriptionById(@PathVariable Long id, @RequestBody Transcription transcription) {
-        Transcription transcriptionUpdate = this.transcriptionService.updateTranscriptionById(id, transcription);
+    public ResponseEntity<ApiResponse<TranscriptionResponseDTO>> updateTranscriptionById(@PathVariable Long id, @RequestBody Transcription transcription) {
+        TranscriptionResponseDTO transcriptionUpdate = this.transcriptionService.updateTranscriptionById(id, transcription);
         return ApiResponse.success(transcriptionUpdate);
     }
 

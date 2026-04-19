@@ -1,18 +1,21 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.StudentDetailDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.StudentDetail;
 
 import java.util.List;
 
 public interface StudentDetailService {
 
-    StudentDetail findStudentDetailById(Long id);
+    public StudentDetailDTO findStudentDetailById(Long id);
 
-    List<StudentDetail> findAllStudentDetail();
+    public StudentDetailDTO findByStudentId(Long studentId);
 
-    StudentDetail saveStudentDetail(Long studentId, StudentDetail studentDetail);
+    public List<StudentDetailDTO> findAllStudentDetail();
 
-    StudentDetail updateStudentDetailById(Long id, StudentDetail studentDetail);
+    public StudentDetailDTO saveStudentDetail(Long studentId, StudentDetail studentDetail);
 
-    void deleteStudentDetailById(Long id);
+    public StudentDetailDTO updateStudentDetailById(Long id, StudentDetail studentDetail);
+
+    public void deleteStudentDetailById(Long id);
 }

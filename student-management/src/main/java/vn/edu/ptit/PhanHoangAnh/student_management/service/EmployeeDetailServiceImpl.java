@@ -5,53 +5,68 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.EmployeeDetailRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.EmployeeRepository;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.EmployeeDetailDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Employee;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.EmployeeDetail;
+import vn.edu.ptit.PhanHoangAnh.student_management.mapper.EmployeeMapper;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeDetailServiceImpl implements EmployeeDetailService {
 
     private EmployeeDetailRepository employeeDetailRepository;
     private EmployeeRepository employeeRepository;
-
+    private EmployeeMapper employeeMapper;
     @Autowired
     public EmployeeDetailServiceImpl(EmployeeDetailRepository employeeDetailRepository,
-                                     EmployeeRepository employeeRepository) {
+                                     EmployeeRepository employeeRepository,EmployeeMapper employeeMapper) {
         this.employeeDetailRepository = employeeDetailRepository;
         this.employeeRepository = employeeRepository;
+        this.employeeMapper = employeeMapper;
     }
 
     @Override
-    public EmployeeDetail findEmployeeDetailById(Long id) {
-        return this.employeeDetailRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException());
+    public EmployeeDetailDTO findEmployeeDetailById(Long id) {
+        return employeeMapper.toDetailDTO(this.employeeDetailRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException()));
     }
 
     @Override
-    public List<EmployeeDetail> findAllEmployeeDetail() {
-        return this.employeeDetailRepository.findAll();
+    public EmployeeDetailDTO findByEmployeeId(Long employeeId) {
+        return this.employeeDetailRepository.findByEmployeeId(employeeId)
+                .map(employeeMapper::toDetailDTO)
+                .orElse(null);
+    }
+
+    @Override
+    public List<EmployeeDetailDTO> findAllEmployeeDetail() {
+        return this.employeeDetailRepository.findAll()
+                .stream()
+                .map(employeeDetail -> employeeMapper.toDetailDTO(employeeDetail))
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public EmployeeDetail saveEmployeeDetail(Long employeeId, EmployeeDetail employeeDetail) {
+    public EmployeeDetailDTO saveEmployeeDetail(Long employeeId, EmployeeDetail employeeDetail) {
         Employee employee = this.employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new RuntimeException());
         employee.setEmployeeDetail(employeeDetail);
         employeeDetail.setEmployee(employee);
-        return this.employeeDetailRepository.save(employeeDetail);
+        return employeeMapper.toDetailDTO(this.employeeDetailRepository.save(employeeDetail));
     }
 
     @Override
     @Transactional
-    public EmployeeDetail updateEmployeeDetailById(Long id, EmployeeDetail employeeDetail) {
+    public EmployeeDetailDTO updateEmployeeDetailById(Long id, EmployeeDetail employeeDetail) {
         EmployeeDetail employeeDetailDb = this.employeeDetailRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
         employeeDetailDb.setAddress(employeeDetail.getAddress());
         employeeDetailDb.setPhoneNumber(employeeDetail.getPhoneNumber());
         employeeDetailDb.setDayOfBirth(employeeDetail.getDayOfBirth());
-        return this.employeeDetailRepository.save(employeeDetailDb);
+        return employeeMapper.toDetailDTO(this.employeeDetailRepository.save(employeeDetailDb));
     }
 
     @Override

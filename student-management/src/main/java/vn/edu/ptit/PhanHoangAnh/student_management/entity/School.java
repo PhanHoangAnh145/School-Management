@@ -16,18 +16,17 @@ public class School {
     private Long id;
 
     @Column(name = "name")
-    @NotBlank(message = "name khong duoc de trong")
     private String name;
 
-    @NotBlank(message = "phone number khong duoc de trong")
+
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @NotBlank(message = "address khong duoc de trong")
+
     @Column(name = "address")
     private String address;
 
-    @NotBlank(message = "grade khong duoc de trong")
+
     @Column(name = "grade")
     private int grade;
 

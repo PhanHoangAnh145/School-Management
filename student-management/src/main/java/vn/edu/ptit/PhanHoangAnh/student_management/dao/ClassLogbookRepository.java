@@ -6,4 +6,5 @@ import vn.edu.ptit.PhanHoangAnh.student_management.entity.ClassLogbook;
 
 @Repository
 public interface ClassLogbookRepository extends JpaRepository<ClassLogbook, Long> {
+    java.util.Optional<ClassLogbook> findByClazzId(Long classId);
 }

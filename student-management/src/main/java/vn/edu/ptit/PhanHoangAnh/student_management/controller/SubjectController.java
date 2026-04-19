@@ -3,6 +3,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.SubjectResponseDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Subject;
 import vn.edu.ptit.PhanHoangAnh.student_management.helper.ApiResponse;
 import vn.edu.ptit.PhanHoangAnh.student_management.service.SubjectService;
@@ -20,26 +21,26 @@ public class SubjectController {
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<List<Subject>>> findAllSubject() {
-        List<Subject> subjectList = this.subjectService.findAllSubject();
+    public ResponseEntity<ApiResponse<List<SubjectResponseDTO>>> findAllSubject() {
+        List<SubjectResponseDTO> subjectList = this.subjectService.findAllSubject();
         return ApiResponse.success(subjectList);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Subject>> findSubjectById(@PathVariable Long id) {
-        Subject subject = this.subjectService.findSubjectById(id);
+    public ResponseEntity<ApiResponse<SubjectResponseDTO>> findSubjectById(@PathVariable Long id) {
+        SubjectResponseDTO subject = this.subjectService.findSubjectById(id);
         return ApiResponse.success(subject);
     }
 
     @PostMapping("/{TeacherId}")
-    public ResponseEntity<ApiResponse<Subject>> saveSubject(@PathVariable Long id, @RequestBody Subject subject) {
-        Subject subjectSave = this.subjectService.saveSubject(id, subject);
+    public ResponseEntity<ApiResponse<SubjectResponseDTO>> saveSubject(@PathVariable Long TeacherId, @RequestBody Subject subject) {
+        SubjectResponseDTO subjectSave = this.subjectService.saveSubject(TeacherId, subject);
         return ApiResponse.created(subjectSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Subject>> updateSubjectById(@PathVariable Long id, @RequestBody Subject subject) {
-        Subject subjectUpdate = this.subjectService.updateSubjectById(id, subject);
+    public ResponseEntity<ApiResponse<SubjectResponseDTO>> updateSubjectById(@PathVariable Long id, @RequestBody Subject subject) {
+        SubjectResponseDTO subjectUpdate = this.subjectService.updateSubjectById(id, subject);
         return ApiResponse.success(subjectUpdate);
     }
 

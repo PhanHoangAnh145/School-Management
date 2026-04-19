@@ -3,6 +3,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.GradeReportResponseDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.GradeReport;
 import vn.edu.ptit.PhanHoangAnh.student_management.helper.ApiResponse;
 import vn.edu.ptit.PhanHoangAnh.student_management.service.GradeReportService;
@@ -20,26 +21,26 @@ public class GradeReportController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<GradeReport>> findGradeReportById(@PathVariable Long id) {
-        GradeReport gradeReport = this.gradeReportService.findGradeReportById(id);
+    public ResponseEntity<ApiResponse<GradeReportResponseDTO>> findGradeReportById(@PathVariable Long id) {
+        GradeReportResponseDTO gradeReport = this.gradeReportService.findGradeReportById(id);
         return ApiResponse.success(gradeReport);
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<List<GradeReport>>> findAllGradeReport() {
-        List<GradeReport> gradeReportList = this.gradeReportService.findAllGradeReport();
+    public ResponseEntity<ApiResponse<List<GradeReportResponseDTO>>> findAllGradeReport() {
+        List<GradeReportResponseDTO> gradeReportList = this.gradeReportService.findAllGradeReport();
         return ApiResponse.success(gradeReportList);
     }
 
     @PostMapping("/{transcriptionId}")
-    public ResponseEntity<ApiResponse<GradeReport>> saveGradeReport(@PathVariable Long transcriptionId, @RequestBody GradeReport gradeReport) {
-        GradeReport gradeReportSave = this.gradeReportService.saveGradeReport(transcriptionId, gradeReport);
+    public ResponseEntity<ApiResponse<GradeReportResponseDTO>> saveGradeReport(@PathVariable Long transcriptionId, @RequestBody GradeReport gradeReport) {
+        GradeReportResponseDTO gradeReportSave = this.gradeReportService.saveGradeReport(transcriptionId, gradeReport);
         return ApiResponse.created(gradeReportSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<GradeReport>> updateGradeReportById(@PathVariable Long id, @RequestBody GradeReport gradeReport) {
-        GradeReport gradeReportUpdate = this.gradeReportService.updateGradeReportById(id, gradeReport);
+    public ResponseEntity<ApiResponse<GradeReportResponseDTO>> updateGradeReportById(@PathVariable Long id, @RequestBody GradeReport gradeReport) {
+        GradeReportResponseDTO gradeReportUpdate = this.gradeReportService.updateGradeReportById(id, gradeReport);
         return ApiResponse.success(gradeReportUpdate);
     }
 

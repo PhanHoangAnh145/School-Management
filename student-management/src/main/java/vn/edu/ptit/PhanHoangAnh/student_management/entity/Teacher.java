@@ -3,15 +3,22 @@ package vn.edu.ptit.PhanHoangAnh.student_management.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "teacher")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Teacher{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToMany
@@ -33,53 +40,10 @@ public class Teacher{
     private List<Subject> subjectList;
 
     @OneToOne
-    @JoinColumn(name = "employee_id")
+    @MapsId
+    @JoinColumn(name = "id")
     @JsonBackReference(value = "teacher-employee")
     private Employee employee;
-
-    public Teacher() {
-    }
-
-    public Teacher(Long id, List<Clazz> clazzList, List<Subject> subjectList, Employee employee) {
-        this.id = id;
-        this.clazzList = clazzList;
-        this.subjectList = subjectList;
-        this.employee = employee;
-    }
-
-    public List<Clazz> getClazzList() {
-        return clazzList;
-    }
-
-    public void setClazzList(List<Clazz> clazzList) {
-        this.clazzList = clazzList;
-    }
-
-    public List<Subject> getSubjectList() {
-        return subjectList;
-    }
-
-    public void setSubjectList(List<Subject> subjectList) {
-        this.subjectList = subjectList;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
-
 
     public void addClazz(Clazz clazzRq) {
         if (clazzList == null) {
@@ -87,6 +51,8 @@ public class Teacher{
         }
         if (!this.clazzList.contains(clazzRq)) {
             clazzList.add(clazzRq);
+            if (clazzRq.getTeacherList() == null)
+                clazzRq.setTeacherList(new ArrayList<>());
             clazzRq.getTeacherList().add(this);
         }
     }
@@ -97,6 +63,8 @@ public class Teacher{
         }
         if (!this.subjectList.contains(subjectRq)) {
             subjectList.add(subjectRq);
+            if (subjectRq.getTeacherList() == null)
+                subjectRq.setTeacherList(new ArrayList<>());
             subjectRq.getTeacherList().add(this);
         }
     }
@@ -104,15 +72,18 @@ public class Teacher{
     public void clearClazzList() {
         if (this.clazzList != null) {
             for (Clazz clazz : new ArrayList<>(this.clazzList)) {
-                clazz.getTeacherList().remove(this);
+                if (clazz.getTeacherList() != null)
+                    clazz.getTeacherList().remove(this);
             }
             this.clazzList.clear();
         }
     }
+
     public void clearSubjectList() {
         if (this.subjectList != null) {
             for (Subject subject : new ArrayList<>(this.subjectList)) {
-                subject.getTeacherList().remove(this);
+                if (subject.getTeacherList() != null)
+                    subject.getTeacherList().remove(this);
             }
             this.subjectList.clear();
         }

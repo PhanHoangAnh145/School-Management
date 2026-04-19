@@ -4,11 +4,19 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Locale;
 
 @Entity
 @Table(name = "student")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,11 +24,9 @@ public class Student {
     private Long id;
 
     @Column(name = "name")
-    @NotBlank(message = "name khong duoc de trong")
     private String name;
 
     @Column(name = "date_of_birth")
-    @NotBlank(message = "date of birth khong duoc de trong")
     private String dateOfBirth;
 
     @ManyToOne
@@ -44,8 +50,6 @@ public class Student {
     @JsonManagedReference(value = "student-transcript")
     private Transcription transcription;
 
-    public Student() {
-    }
 
     public Student(String name, String dateOfBirth, Clazz clazz, StudentRecord studentRecord, StudentDetail studentDetail, Parent parent, Transcription transcription) {
         this.name = name;
@@ -54,70 +58,6 @@ public class Student {
         this.studentRecord = studentRecord;
         this.studentDetail = studentDetail;
         this.parent = parent;
-        this.transcription = transcription;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public Clazz getClazz() {
-        return clazz;
-    }
-
-    public void setClazz(Clazz clazz) {
-        this.clazz = clazz;
-    }
-
-    public StudentRecord getStudentRecord() {
-        return studentRecord;
-    }
-
-    public void setStudentRecord(StudentRecord studentRecord) {
-        this.studentRecord = studentRecord;
-    }
-
-    public StudentDetail getStudentDetail() {
-        return studentDetail;
-    }
-
-    public void setStudentDetail(StudentDetail studentDetail) {
-        this.studentDetail = studentDetail;
-    }
-
-    public Parent getParent() {
-        return parent;
-    }
-
-    public void setParent(Parent parent) {
-        this.parent = parent;
-    }
-
-    public Transcription getTranscription() {
-        return transcription;
-    }
-
-    public void setTranscription(Transcription transcription) {
         this.transcription = transcription;
     }
 

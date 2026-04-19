@@ -4,7 +4,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.StudentDetail;
 
+import java.util.Optional;
+
 @Repository
 public interface StudentDetailRepository extends JpaRepository<StudentDetail, Long> {
-
+    Optional<StudentDetail> findByStudentId(Long studentId);
 }

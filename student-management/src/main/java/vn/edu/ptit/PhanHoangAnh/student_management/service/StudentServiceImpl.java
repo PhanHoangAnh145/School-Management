@@ -6,49 +6,58 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.ClassRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.StudentRepository;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.StudentResponseDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Clazz;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Student;
+import vn.edu.ptit.PhanHoangAnh.student_management.mapper.StudentMapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService{
-    public StudentRepository studentRepository;
-    public ClassRepository classRepository;
+    private StudentRepository studentRepository;
+    private ClassRepository classRepository;
+    private StudentMapper studentMapper;
 
     @Autowired
-    public StudentServiceImpl (StudentRepository studentRepository, ClassRepository classRepository) {
+    public StudentServiceImpl (StudentRepository studentRepository, ClassRepository classRepository, StudentMapper studentMapper) {
         this.studentRepository = studentRepository;
         this.classRepository = classRepository;
+        this.studentMapper = studentMapper;
     }
 
     @Override
-    public List<Student> findAllStudent() {
-        return this.studentRepository.findAll();
+    public List<StudentResponseDTO> findAllStudent() {
+        return this.studentRepository.findAll()
+                .stream()
+                .map(student -> studentMapper.toDTO(student))
+                .collect(Collectors.toList());
+
     }
 
     @Override
-    public Student findStudentById(Long id) {
-        return this.studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The student with id:" + id + " isn't existing"));
+    public StudentResponseDTO findStudentById(Long id) {
+        return studentMapper.toDTO(this.studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The student with id:" + id + " isn't existing")));
     }
 
     @Transactional
     @Override
-    public Student saveStudent(Long classId, Student student) {
+    public StudentResponseDTO saveStudent(Long classId, Student student) {
         Clazz clazz = this.classRepository.findById(classId).orElseThrow(() -> new EntityNotFoundException("The class with id:" + classId + " isn't existing"));
         clazz.addStudent(student);
 
-        return this.studentRepository.save(student);
+        return studentMapper.toDTO(this.studentRepository.save(student));
     }
 
     @Transactional
     @Override
-    public Student updateStudentById(Long id, Student studentRq) {
+    public StudentResponseDTO updateStudentById(Long id, Student studentRq) {
         Student student = this.studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The student with id:" + id + " isn't existing"));
         student.setName(studentRq.getName());
         student.setDateOfBirth(studentRq.getDateOfBirth());
 
-        return this.studentRepository.saveAndFlush(student);
+        return studentMapper.toDTO(this.studentRepository.saveAndFlush(student));
     }
 
     @Transactional

@@ -5,51 +5,63 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.GradeReportRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.TranscriptionRepository;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.GradeReportResponseDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.GradeReport;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Transcription;
+import vn.edu.ptit.PhanHoangAnh.student_management.mapper.GradeReportMapper;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class GradeReportServiceImpl implements GradeReportService {
 
     private GradeReportRepository gradeReportRepository;
     private TranscriptionRepository transcriptionRepository;
+    private GradeReportMapper gradeReportMapper;
 
     @Autowired
     public GradeReportServiceImpl(GradeReportRepository gradeReportRepository,
-                                  TranscriptionRepository transcriptionRepository) {
+                                  TranscriptionRepository transcriptionRepository,
+                                  GradeReportMapper gradeReportMapper) {
         this.gradeReportRepository = gradeReportRepository;
         this.transcriptionRepository = transcriptionRepository;
+        this.gradeReportMapper = gradeReportMapper;
     }
 
     @Override
-    public GradeReport findGradeReportById(Long id) {
-        return this.gradeReportRepository.findById(id)
+    public GradeReportResponseDTO findGradeReportById(Long id) {
+        GradeReport gradeReport = this.gradeReportRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
+        return this.gradeReportMapper.toDTO(gradeReport);
     }
 
     @Override
-    public List<GradeReport> findAllGradeReport() {
-        return this.gradeReportRepository.findAll();
+    public List<GradeReportResponseDTO> findAllGradeReport() {
+        List<GradeReport> gradeReports = this.gradeReportRepository.findAll();
+        return gradeReports.stream()
+                .map(this.gradeReportMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional
-    public GradeReport saveGradeReport(Long transcriptionId, GradeReport gradeReport) {
+    public GradeReportResponseDTO saveGradeReport(Long transcriptionId, GradeReport gradeReport) {
         Transcription transcription = this.transcriptionRepository.findById(transcriptionId)
                 .orElseThrow(() -> new RuntimeException());
         transcription.addGradeReport(gradeReport);
-        return this.gradeReportRepository.save(gradeReport);
+        GradeReport savedGradeReport = this.gradeReportRepository.save(gradeReport);
+        return this.gradeReportMapper.toDTO(savedGradeReport);
     }
 
     @Override
     @Transactional
-    public GradeReport updateGradeReportById(Long id, GradeReport gradeReport) {
+    public GradeReportResponseDTO updateGradeReportById(Long id, GradeReport gradeReport) {
         GradeReport gradeReportDb = this.gradeReportRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
         gradeReportDb.setName(gradeReport.getName());
         gradeReportDb.setTenMark(gradeReport.getTenMark());
-        return this.gradeReportRepository.save(gradeReportDb);
+        GradeReport updatedGradeReport = this.gradeReportRepository.save(gradeReportDb);
+        return this.gradeReportMapper.toDTO(updatedGradeReport);
     }
 
     @Override

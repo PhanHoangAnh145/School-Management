@@ -1,12 +1,14 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
-import vn.edu.ptit.PhanHoangAnh.student_management.entity.StudentRecord;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.StudentRecordRequestDTO;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.StudentRecordResponseDTO;
 import java.util.List;
 
 public interface StudentRecordService {
-    StudentRecord findStudentRecordById(Long id);
-    List<StudentRecord> findAllStudentRecord();
-    StudentRecord saveStudentRecord(Long studentId, StudentRecord studentRecord);
-    StudentRecord updateStudentRecordById(Long id, StudentRecord studentRecord);
+    StudentRecordResponseDTO findStudentRecordById(Long id);
+    StudentRecordResponseDTO findByStudentId(Long studentId);
+    List<StudentRecordResponseDTO> findAllStudentRecord();
+    StudentRecordResponseDTO saveStudentRecord(Long studentId, StudentRecordRequestDTO studentRecordRequestDTO);
+    StudentRecordResponseDTO updateStudentRecordById(Long id, StudentRecordRequestDTO studentRecordRequestDTO);
     void deleteStudentRecordById(Long id);
 }

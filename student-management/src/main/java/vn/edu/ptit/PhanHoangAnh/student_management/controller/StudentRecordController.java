@@ -3,7 +3,8 @@ package vn.edu.ptit.PhanHoangAnh.student_management.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import vn.edu.ptit.PhanHoangAnh.student_management.entity.StudentRecord;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.StudentRecordRequestDTO;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.StudentRecordResponseDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.helper.ApiResponse;
 import vn.edu.ptit.PhanHoangAnh.student_management.service.StudentRecordService;
 import java.util.List;
@@ -20,26 +21,26 @@ public class StudentRecordController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<StudentRecord>> findStudentRecordById(@PathVariable Long id) {
-        StudentRecord studentRecord = this.studentRecordService.findStudentRecordById(id);
+    public ResponseEntity<ApiResponse<StudentRecordResponseDTO>> findStudentRecordById(@PathVariable Long id) {
+        StudentRecordResponseDTO studentRecord = this.studentRecordService.findByStudentId(id);
         return ApiResponse.success(studentRecord);
     }
 
     @GetMapping()
-    public ResponseEntity<ApiResponse<List<StudentRecord>>> findAllStudentRecord() {
-        List<StudentRecord> studentRecordList = this.studentRecordService.findAllStudentRecord();
+    public ResponseEntity<ApiResponse<List<StudentRecordResponseDTO>>> findAllStudentRecord() {
+        List<StudentRecordResponseDTO> studentRecordList = this.studentRecordService.findAllStudentRecord();
         return ApiResponse.success(studentRecordList);
     }
 
     @PostMapping("/{studentId}")
-    public ResponseEntity<ApiResponse<StudentRecord>> saveStudentRecord(@PathVariable Long studentId, @RequestBody StudentRecord studentRecord) {
-        StudentRecord studentRecordSave = this.studentRecordService.saveStudentRecord(studentId, studentRecord);
+    public ResponseEntity<ApiResponse<StudentRecordResponseDTO>> saveStudentRecord(@PathVariable Long studentId, @RequestBody StudentRecordRequestDTO studentRecordRequestDTO) {
+        StudentRecordResponseDTO studentRecordSave = this.studentRecordService.saveStudentRecord(studentId, studentRecordRequestDTO);
         return ApiResponse.created(studentRecordSave);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<StudentRecord>> updateStudentRecordById(@PathVariable Long id, @RequestBody StudentRecord studentRecord) {
-        StudentRecord studentRecordUpdate = this.studentRecordService.updateStudentRecordById(id, studentRecord);
+    public ResponseEntity<ApiResponse<StudentRecordResponseDTO>> updateStudentRecordById(@PathVariable Long id, @RequestBody StudentRecordRequestDTO studentRecordRequestDTO) {
+        StudentRecordResponseDTO studentRecordUpdate = this.studentRecordService.updateStudentRecordById(id, studentRecordRequestDTO);
         return ApiResponse.success(studentRecordUpdate);
     }
 

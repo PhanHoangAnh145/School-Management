@@ -60,9 +60,10 @@ public class AuthController {
         ResponseCookie resCookies = ResponseCookie
                 .from("refreshToken", refreshToken)
                 .httpOnly(true)
-                .secure(true)
+                .secure(false)
                 .path("/")
                 .maxAge(refreshTokenExpiration)
+                .sameSite("Lax")
                 .build();
         ApiResponse<LoginResponseDTO> finalData = new ApiResponse<>(HttpStatus.OK, "", responseDTO, "");
 
@@ -90,9 +91,10 @@ public class AuthController {
         ResponseCookie resCookies = ResponseCookie
                 .from("refreshToken", exchangeTokenResponse.getRefreshToken())
                 .httpOnly(true)
-                .secure(true)
+                .secure(false)
                 .path("/")
                 .maxAge(refreshTokenExpiration)
+                .sameSite("Lax")
                 .build();
 
 
@@ -130,9 +132,10 @@ public class AuthController {
         ResponseCookie deleteSpringCookie = ResponseCookie
                 .from("refreshToken", null)
                 .httpOnly(true)
-                .secure(true)
+                .secure(false)
                 .path("/")
                 .maxAge(0)
+                .sameSite("Lax")
                 .build();
 
         ApiResponse<String> finalData = new ApiResponse<>(HttpStatus.OK, "", "ok", "");

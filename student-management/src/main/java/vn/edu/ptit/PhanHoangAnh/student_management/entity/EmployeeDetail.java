@@ -2,9 +2,17 @@ package vn.edu.ptit.PhanHoangAnh.student_management.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "employee_detail")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +33,6 @@ public class EmployeeDetail {
     @JsonBackReference(value = "employee-detail")
     private Employee employee;
 
-    public EmployeeDetail() {
-    }
 
     public EmployeeDetail(String dayOfBirth, String address, String phoneNumber, Employee employee) {
         this.dayOfBirth = dayOfBirth;
@@ -34,46 +40,5 @@ public class EmployeeDetail {
         this.phoneNumber = phoneNumber;
         this.employee = employee;
     }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getDayOfBirth() {
-        return dayOfBirth;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setDayOfBirth(String dayOfBirth) {
-        this.dayOfBirth = dayOfBirth;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
 
 }
