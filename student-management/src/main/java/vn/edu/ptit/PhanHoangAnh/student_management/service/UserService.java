@@ -1,6 +1,7 @@
 package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.UserProfileUpdateDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.dto.UserResponseDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Role;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.User;
@@ -16,5 +17,7 @@ public interface UserService {
     public UserResponseDTO findUserById(Long id);
     public List<UserResponseDTO> findAllUser();
     public UserResponseDTO updateUserById(Long id, User user);
+    public void changePassword(Long id, String oldPassword, String newPassword);
+    UserResponseDTO updateMyProfile(Long id, UserProfileUpdateDTO dto);
 //    public void assignRoleToUser(Long userId, Long roleId);
 }

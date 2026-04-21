@@ -28,6 +28,10 @@ const App: React.FC = () => {
             {/* Admin Only Routes */}
             <Route element={<ProtectedRoute allowedRoles={['ROLE_ADMIN']} />}>
               <Route path="/admin/users" element={<AdminUserManagement />} />
+            </Route>
+
+            {/* Admin + Teacher + Student (view-only for student enforced in UI + backend) */}
+            <Route element={<ProtectedRoute allowedRoles={['ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_STUDENT']} />}>
               <Route path="/admin/schools" element={<AdminSchools />} />
             </Route>
           </Route>

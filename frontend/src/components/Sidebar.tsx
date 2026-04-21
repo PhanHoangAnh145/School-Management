@@ -3,10 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   School as SchoolIcon, 
-  GraduationCap, 
-  Users, 
   UserPlus, 
-  Settings,
   ChevronRight
 } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
@@ -14,8 +11,6 @@ import { useAuthStore } from '../store/useAuthStore';
 const Sidebar: React.FC = () => {
   const { user } = useAuthStore();
   const location = useLocation();
-
-  const isAdmin = user?.role.includes('ROLE_ADMIN');
 
   const menuItems = [
     {
@@ -28,7 +23,7 @@ const Sidebar: React.FC = () => {
       title: 'Schools & Classes',
       icon: <SchoolIcon className="w-5 h-5" />,
       path: '/admin/schools',
-      roles: ['ROLE_ADMIN']
+      roles: ['ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_STUDENT']
     },
     {
       title: 'Manage Users',

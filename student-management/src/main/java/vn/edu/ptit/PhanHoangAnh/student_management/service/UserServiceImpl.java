@@ -2,6 +2,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,12 +12,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.RoleRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.UserRepository;
+import vn.edu.ptit.PhanHoangAnh.student_management.dto.UserProfileUpdateDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.dto.UserResponseDTO;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.Role;
 import vn.edu.ptit.PhanHoangAnh.student_management.entity.User;
 import vn.edu.ptit.PhanHoangAnh.student_management.mapper.UserMapper;
 
+import javax.sql.rowset.serial.SerialBlob;
+
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -91,19 +96,100 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional
     public UserResponseDTO updateUserById(Long id, User user) {
-        User userDb = this.userRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Khong tim thay user co id:" + id));
-        userDb.setUsername(user.getUsername());
-        userDb.setPassword(bCryptPasswordEncoder.encode(userDb.getPassword()));
-        userDb.setEnabled(true);
-        userDb.setFirstname(user.getFirstname());
-        userDb.setLastname(user.getLastname());
-        userDb.setEmail(user.getEmail());
-        userDb.setAvatar(user.getAvatar());
+        User userDb = this.userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Khong tim thay user co id:" + id));
+        if (user.getUsername() != null) {
+            userDb.setUsername(user.getUsername());
+        }
+        if (user.getPassword() != null && !user.getPassword().isBlank()) {
+            userDb.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        }
+        if (user.getEnabled() != null) {
+            userDb.setEnabled(user.getEnabled());
+        }
+        if (user.getFirstname() != null) {
+            userDb.setFirstname(user.getFirstname());
+        }
+        if (user.getLastname() != null) {
+            userDb.setLastname(user.getLastname());
+        }
+        if (user.getEmail() != null) {
+            userDb.setEmail(user.getEmail());
+        }
+        if (user.getAvatar() != null) {
+            userDb.setAvatar(user.getAvatar());
+        }
+        this.userRepository.save(userDb);
         return userMapper.toDTO(userDb);
     }
 
-//        @Override
+    @Override
+    @Transactional
+    public UserResponseDTO updateMyProfile(Long id, UserProfileUpdateDTO dto) {
+        User userDb = this.userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Khong tim thay user co id:" + id));
+        if (dto.getFirstname() != null) {
+            userDb.setFirstname(dto.getFirstname());
+        }
+        if (dto.getLastname() != null) {
+            userDb.setLastname(dto.getLastname());
+        }
+        if (dto.getEmail() != null) {
+            userDb.setEmail(dto.getEmail());
+        }
+        if (dto.getAvatarBase64() != null) {
+            if (dto.getAvatarBase64().isBlank()) {
+                // Empty string means remove avatar
+                userDb.setAvatar(null);
+            } else {
+                try {
+                    byte[] bytes = decodeAvatarBase64(dto.getAvatarBase64());
+                    if (bytes.length > 0) {
+                        userDb.setAvatar(new SerialBlob(bytes));
+                    } else {
+                        userDb.setAvatar(null);
+                    }
+                } catch (Exception e) {
+                    // Log error but don't fail the whole update
+                    System.err.println("Could not store avatar: " + e.getMessage());
+                    // Keep existing avatar on error
+                }
+            }
+        }
+        this.userRepository.save(userDb);
+        return userMapper.toDTO(userDb);
+    }
+
+    private static byte[] decodeAvatarBase64(String input) {
+        String base64 = input.trim();
+        int comma = base64.indexOf(',');
+        if (base64.startsWith("data:") && comma > 0) {
+            base64 = base64.substring(comma + 1);
+        }
+        return Base64.getDecoder().decode(base64);
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(Long id, String oldPassword, String newPassword) {
+        User userDb = this.userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Khong tim thay user co id:" + id));
+
+        if (oldPassword == null || oldPassword.isBlank()) {
+            throw new IllegalArgumentException("Mật khẩu cũ không được để trống!");
+        }
+        if (newPassword == null || newPassword.isBlank()) {
+            throw new IllegalArgumentException("Mật khẩu mới không được để trống!");
+        }
+        if (!this.bCryptPasswordEncoder.matches(oldPassword, userDb.getPassword())) {
+            throw new IllegalArgumentException("Mật khẩu cũ không chính xác!");
+        }
+
+        userDb.setPassword(this.bCryptPasswordEncoder.encode(newPassword));
+        this.userRepository.save(userDb);
+    }
+
+    //        @Override
 //    @Transactional
 //    public void assignRoleToUser(Long userId, Long roleId) {
 //        // 1. Tìm User và Role theo ID

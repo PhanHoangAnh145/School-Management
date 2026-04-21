@@ -3,8 +3,13 @@ export type Role = 'ROLE_ADMIN' | 'ROLE_TEACHER' | 'ROLE_STUDENT';
 export type User = {
   id: number;
   username: string;
-  email: string;
-  role: string; // Keep it string to be flexible with multiple roles if needed, or just use Role
+  email?: string;
+  role: string;
+  firstname?: string | null;
+  lastname?: string | null;
+  enabled?: boolean;
+  /** Raw Base64 from API (entity avatar blob) */
+  avatarBase64?: string | null;
 };
 
 export type AuthResponse = {
@@ -17,5 +22,6 @@ export type AuthState = {
   token: string | null;
   isAuthenticated: boolean;
   setAuth: (response: AuthResponse) => void;
+  setUser: (user: User) => void;
   logout: () => void;
 };

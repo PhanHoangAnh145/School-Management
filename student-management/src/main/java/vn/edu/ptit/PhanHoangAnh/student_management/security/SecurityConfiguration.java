@@ -17,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -105,6 +106,11 @@ public class SecurityConfiguration {
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/refresh").permitAll()
                         .requestMatchers("/auth/refresh-with-cookie").permitAll()
+                        // Students/Teachers can view Schools & Classes, but only admins can mutate them
+                        .requestMatchers(HttpMethod.GET, "/api/school/**", "/api/class/**").hasAnyRole("STUDENT", "TEACHER", "ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/school/**", "/api/class/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/school/**", "/api/class/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/school/**", "/api/class/**").hasRole("ADMIN")
                         .requestMatchers("/api/student/**").hasAnyRole("STUDENT", "TEACHER", "ADMIN")
                         .requestMatchers("/api/teacher/**").hasAnyRole("TEACHER", "ADMIN")
                         .requestMatchers("/api/admin/**", "/admin/**").hasRole("ADMIN")

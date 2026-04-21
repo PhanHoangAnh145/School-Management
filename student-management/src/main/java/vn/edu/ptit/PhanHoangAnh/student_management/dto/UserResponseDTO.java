@@ -2,8 +2,6 @@ package vn.edu.ptit.PhanHoangAnh.student_management.dto;
 
 import lombok.*;
 
-import java.sql.Blob;
-
 @Setter
 @Getter
 @NoArgsConstructor
@@ -22,6 +20,9 @@ public class UserResponseDTO {
 
     private String lastname;
 
-    private Blob avatar;
+    /** Space-separated role names, aligned with JWT scope */
+    private String role;
 
+    /** Base64-encoded avatar bytes for JSON (no data URL prefix) */
+    private String avatarBase64;
 }

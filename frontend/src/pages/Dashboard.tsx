@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/useAuthStore';
 import { 
   Building2, 
@@ -9,15 +9,38 @@ import {
   Calendar,
   Activity
 } from 'lucide-react';
+import { getDashboardStats, type DashboardStats } from '../api/dashboardApi';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuthStore();
+  const [stats, setStats] = useState<DashboardStats>({
+    totalSchools: 0,
+    activeClasses: 0,
+    totalStudents: 0,
+    systemHealth: '99.9%'
+  });
+  const [loading, setLoading] = useState(true);
 
-  const stats = [
-    { label: 'Total Schools', value: '12', icon: <Building2 className="w-5 h-5" />, color: 'bg-blue-500' },
-    { label: 'Active Classes', value: '48', icon: <GraduationCap className="w-5 h-5" />, color: 'bg-green-500' },
-    { label: 'Total Students', value: '1,250', icon: <Users className="w-5 h-5" />, color: 'bg-purple-500' },
-    { label: 'System Health', value: '99.9%', icon: <Activity className="w-5 h-5" />, color: 'bg-orange-500' },
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await getDashboardStats();
+        setStats(data);
+      } catch (error) {
+        console.error('Failed to fetch dashboard stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  const statsData = [
+    { label: 'Total Schools', value: stats.totalSchools.toLocaleString(), icon: <Building2 className="w-5 h-5" />, color: 'bg-blue-500' },
+    { label: 'Active Classes', value: stats.activeClasses.toLocaleString(), icon: <GraduationCap className="w-5 h-5" />, color: 'bg-green-500' },
+    { label: 'Total Students', value: stats.totalStudents.toLocaleString(), icon: <Users className="w-5 h-5" />, color: 'bg-purple-500' },
+    { label: 'System Health', value: stats.systemHealth, icon: <Activity className="w-5 h-5" />, color: 'bg-orange-500' },
   ];
 
   return (
@@ -31,17 +54,30 @@ const Dashboard: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, i) => (
-          <div key={i} className="bg-white p-6 rounded-2xl shadow-xl shadow-gray-100 border border-gray-100 flex items-center gap-4 hover:shadow-blue-50 transition-all">
-            <div className={`${stat.color} p-3 rounded-xl text-white shadow-lg`}>
-              {stat.icon}
+        {loading ? (
+          // Loading skeleton
+          Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="bg-white p-6 rounded-2xl shadow-xl shadow-gray-100 border border-gray-100 flex items-center gap-4">
+              <div className="bg-gray-200 p-3 rounded-xl animate-pulse w-12 h-12"></div>
+              <div className="flex-1">
+                <div className="h-3 bg-gray-200 rounded animate-pulse mb-2 w-20"></div>
+                <div className="h-6 bg-gray-200 rounded animate-pulse w-16"></div>
+              </div>
             </div>
-            <div>
-              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{stat.label}</p>
-              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+          ))
+        ) : (
+          statsData.map((stat, i) => (
+            <div key={i} className="bg-white p-6 rounded-2xl shadow-xl shadow-gray-100 border border-gray-100 flex items-center gap-4 hover:shadow-blue-50 transition-all">
+              <div className={`${stat.color} p-3 rounded-xl text-white shadow-lg`}>
+                {stat.icon}
+              </div>
+              <div>
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{stat.label}</p>
+                <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

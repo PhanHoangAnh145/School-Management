@@ -1,11 +1,43 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import UserProfileModal from './UserProfileModal';
 import { useAuthStore } from '../store/useAuthStore';
+import apiClient from '../api/axios';
 import { LogOut, Bell, Search, User as UserIcon } from 'lucide-react';
+import { avatarSrcFromBase64 } from '../utils/avatar';
+import type { User } from '../types/auth';
 
 const MainLayout: React.FC = () => {
-  const { logout, user } = useAuthStore();
+  const { logout, user, token } = useAuthStore();
+  const [profileOpen, setProfileOpen] = React.useState(false);
+
+  useEffect(() => {
+    if (!token) return;
+    let cancelled = false;
+    const applyUser = useAuthStore.getState().setUser;
+    apiClient
+      .get('/api/user/profile')
+      .then((res) => {
+        if (cancelled || res.data.status !== 'success' || !res.data.data) return;
+        const u = res.data.data;
+        const next: User = {
+          id: u.id,
+          username: u.username,
+          email: u.email ?? undefined,
+          firstname: u.firstname,
+          lastname: u.lastname,
+          role: u.role ?? '',
+          enabled: u.enabled,
+          avatarBase64: u.avatarBase64 ?? null,
+        };
+        applyUser(next);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [token]);
 
   return (
     <div className="flex min-h-screen bg-gray-50 font-sans">
@@ -39,11 +71,23 @@ const MainLayout: React.FC = () => {
               </div>
               
               <div className="relative group">
-                <button className="flex items-center gap-2 p-1.5 rounded-full bg-blue-50 border border-blue-100 group-hover:bg-blue-100 transition-all duration-200">
-                  <UserIcon className="w-5 h-5 text-blue-600" />
+                <button
+                  type="button"
+                  onClick={() => setProfileOpen(true)}
+                  className="flex items-center justify-center w-9 h-9 rounded-full bg-blue-50 border border-blue-100 group-hover:bg-blue-100 transition-all duration-200 overflow-hidden"
+                  title="Profile"
+                  aria-label="Open profile"
+                >
+                  {user?.avatarBase64 ? (
+                    <img
+                      src={avatarSrcFromBase64(user.avatarBase64)}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <UserIcon className="w-5 h-5 text-blue-600" />
+                  )}
                 </button>
-                
-                {/* Dropdown would go here */}
               </div>
 
               <button
@@ -61,6 +105,8 @@ const MainLayout: React.FC = () => {
           <Outlet />
         </main>
       </div>
+
+      <UserProfileModal isOpen={profileOpen} onClose={() => setProfileOpen(false)} />
     </div>
   );
 };

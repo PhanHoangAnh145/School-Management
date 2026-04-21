@@ -177,6 +177,14 @@ const AdminSchools: React.FC = () => {
   });
   
   const { user } = useAuthStore();
+  const isAdmin = !!user?.role?.includes('ROLE_ADMIN');
+  const isTeacher = !!user?.role?.includes('ROLE_TEACHER');
+  const isStudent = !!user?.role?.includes('ROLE_STUDENT');
+
+  // Admin can mutate schools/classes; teacher/student are view-only at school/class level.
+  const canManageSchoolsAndClasses = isAdmin;
+  // Inside a class: teacher has admin-like permissions; student is view-only.
+  const canManageInsideClass = isAdmin || isTeacher;
 
   const fetchSchools = async () => {
     try {
@@ -717,69 +725,73 @@ const AdminSchools: React.FC = () => {
             </h1>
             <p className="text-gray-500 mt-1">Grade {selectedClass.grade} • Year {selectedClass.year}</p>
           </div>
-          <button 
-            onClick={() => setIsAddingStudent(true)}
-            className="bg-blue-600 text-white px-6 py-2.5 rounded-xl font-semibold shadow-lg hover:bg-blue-700 flex items-center gap-2"
-          >
-            <Plus className="w-5 h-5" /> Enroll Student
-          </button>
+          {canManageInsideClass && (
+            <button 
+              onClick={() => setIsAddingStudent(true)}
+              className="bg-blue-600 text-white px-6 py-2.5 rounded-xl font-semibold shadow-lg hover:bg-blue-700 flex items-center gap-2"
+            >
+              <Plus className="w-5 h-5" /> Enroll Student
+            </button>
+          )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <button 
-            onClick={() => setManagementModal({ isOpen: true, type: 'parent' })}
-            className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-3 text-left group"
-          >
-            <div className="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
-              <Users className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="font-bold text-gray-900 text-sm">Parent Information</p>
-              <p className="text-xs text-gray-500">Manage all parents in this class</p>
-            </div>
-          </button>
+        {canManageInsideClass && (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <button 
+              onClick={() => setManagementModal({ isOpen: true, type: 'parent' })}
+              className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-3 text-left group"
+            >
+              <div className="p-2 bg-blue-50 text-blue-600 rounded-lg group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                <Users className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-bold text-gray-900 text-sm">Parent Information</p>
+                <p className="text-xs text-gray-500">Manage all parents in this class</p>
+              </div>
+            </button>
 
-          <button 
-            onClick={() => setManagementModal({ isOpen: true, type: 'record' })}
-            className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-3 text-left group"
-          >
-            <div className="p-2 bg-green-50 text-green-600 rounded-lg group-hover:bg-green-600 group-hover:text-white transition-colors">
-              <FileText className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="font-bold text-gray-900 text-sm">Student Records</p>
-              <p className="text-xs text-gray-500">Academic & behavior notes</p>
-            </div>
-          </button>
+            <button 
+              onClick={() => setManagementModal({ isOpen: true, type: 'record' })}
+              className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-3 text-left group"
+            >
+              <div className="p-2 bg-green-50 text-green-600 rounded-lg group-hover:bg-green-600 group-hover:text-white transition-colors">
+                <FileText className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-bold text-gray-900 text-sm">Student Records</p>
+                <p className="text-xs text-gray-500">Academic & behavior notes</p>
+              </div>
+            </button>
 
-          <button 
-            onClick={() => setManagementModal({ isOpen: true, type: 'transcription' })}
-            className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-3 text-left group"
-          >
-            <div className="p-2 bg-purple-50 text-purple-600 rounded-lg group-hover:bg-purple-600 group-hover:text-white transition-colors">
-              <BookOpen className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="font-bold text-gray-900 text-sm">Transcriptions</p>
-              <p className="text-xs text-gray-500">Grades & annual ratings</p>
-            </div>
-          </button>
+            <button 
+              onClick={() => setManagementModal({ isOpen: true, type: 'transcription' })}
+              className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-3 text-left group"
+            >
+              <div className="p-2 bg-purple-50 text-purple-600 rounded-lg group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                <BookOpen className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-bold text-gray-900 text-sm">Transcriptions</p>
+                <p className="text-xs text-gray-500">Grades & annual ratings</p>
+              </div>
+            </button>
 
-          <button 
-            onClick={() => setManagementModal({ isOpen: true, type: 'logbook' })}
-            className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-3 text-left group"
-          >
-            <div className="p-2 bg-orange-50 text-orange-600 rounded-lg group-hover:bg-orange-600 group-hover:text-white transition-colors">
-              <FileText className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="font-bold text-gray-900 text-sm">Class Logbook</p>
-              <p className="text-xs text-gray-500">Manage daily class diary</p>
-            </div>
-          </button>
-        </div>
+            <button 
+              onClick={() => setManagementModal({ isOpen: true, type: 'logbook' })}
+              className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-all flex items-center gap-3 text-left group"
+            >
+              <div className="p-2 bg-orange-50 text-orange-600 rounded-lg group-hover:bg-orange-600 group-hover:text-white transition-colors">
+                <FileText className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-bold text-gray-900 text-sm">Class Logbook</p>
+                <p className="text-xs text-gray-500">Manage daily class diary</p>
+              </div>
+            </button>
+          </div>
+        )}
 
-        {isAddingStudent && (
+        {canManageInsideClass && isAddingStudent && (
           <div className="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 animate-in slide-in-from-top">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold">New Student Enrollment</h2>
@@ -803,7 +815,7 @@ const AdminSchools: React.FC = () => {
           </div>
         )}
 
-        {isEditingParent && (
+        {canManageInsideClass && isEditingParent && (
           <div className="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 animate-in slide-in-from-bottom mt-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold">Parent Information: {isEditingParent.name}</h2>
@@ -849,7 +861,7 @@ const AdminSchools: React.FC = () => {
           </div>
         )}
 
-        {isEditingRecord && (
+        {canManageInsideClass && isEditingRecord && (
           <div className="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 animate-in slide-in-from-bottom mt-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold">Student Record: {isEditingRecord.name}</h2>
@@ -878,7 +890,7 @@ const AdminSchools: React.FC = () => {
           </div>
         )}
 
-        {isEditingTranscription && (
+        {canManageInsideClass && isEditingTranscription && (
           <div className="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 animate-in slide-in-from-bottom mt-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold">Student Transcription: {isEditingTranscription.name}</h2>
@@ -929,7 +941,7 @@ const AdminSchools: React.FC = () => {
           </div>
         )}
 
-        {isEditingLogbook && (
+        {canManageInsideClass && isEditingLogbook && (
           <div className="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 animate-in slide-in-from-bottom mt-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold">Class Logbook: {isEditingLogbook.name}</h2>
@@ -963,7 +975,7 @@ const AdminSchools: React.FC = () => {
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold">Student Profile Details: {isEditingStudentDetail.name}</h2>
               <div className="flex items-center gap-2">
-                {!isEditMode && studentDetail && (
+                {canManageInsideClass && !isEditMode && studentDetail && (
                   <div className="relative group">
                     <button 
                       className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
@@ -995,7 +1007,7 @@ const AdminSchools: React.FC = () => {
                     </div>
                   </div>
                 )}
-                {!isEditMode && studentDetail && (
+                {canManageInsideClass && !isEditMode && studentDetail && (
                   <button 
                     onClick={() => setIsEditMode(true)}
                     className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
@@ -1017,7 +1029,7 @@ const AdminSchools: React.FC = () => {
             {detailLoading ? (
               <div className="py-10 text-center"><Loader2 className="w-8 h-8 animate-spin mx-auto text-blue-600" /></div>
             ) : studentDetail && (
-              isEditMode ? (
+              (canManageInsideClass && isEditMode) ? (
                 <form onSubmit={handleSaveStudentDetail} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-bold text-gray-700">Full Name</label>
@@ -1097,31 +1109,37 @@ const AdminSchools: React.FC = () => {
                   <td className="px-8 py-4 font-bold">{s.name}</td>
                   <td className="px-8 py-4 text-gray-500">{s.dateOfBirth}</td>
                   <td className="px-8 py-4 text-right">
-                    <button 
-                      onClick={(e) => { e.stopPropagation(); setDeleteModal({ isOpen: true, type: 'student', id: s.id, name: s.name }); }}
-                      className="p-2 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                    {canManageInsideClass && (
+                      <button 
+                        onClick={(e) => { e.stopPropagation(); setDeleteModal({ isOpen: true, type: 'student', id: s.id, name: s.name }); }}
+                        className="p-2 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <ConfirmDeleteModal
-          isOpen={deleteModal.isOpen}
-          onClose={() => setDeleteModal({ isOpen: false, type: 'school', id: null, name: '' })}
-          onConfirm={handleDeleteConfirm}
-          title={`Delete ${deleteModal.type}`}
-          itemName={deleteModal.name}
-        />
-        <DataManagementModal 
-          isOpen={managementModal.isOpen}
-          onClose={() => setManagementModal(prev => ({ ...prev, isOpen: false }))}
-          type={managementModal.type}
-          filterStudentIds={students.map(s => s.id)}
-        />
+        {canManageInsideClass && (
+          <>
+            <ConfirmDeleteModal
+              isOpen={deleteModal.isOpen}
+              onClose={() => setDeleteModal({ isOpen: false, type: 'school', id: null, name: '' })}
+              onConfirm={handleDeleteConfirm}
+              title={`Delete ${deleteModal.type}`}
+              itemName={deleteModal.name}
+            />
+            <DataManagementModal 
+              isOpen={managementModal.isOpen}
+              onClose={() => setManagementModal(prev => ({ ...prev, isOpen: false }))}
+              type={managementModal.type}
+              filterStudentIds={students.map(s => s.id)}
+            />
+          </>
+        )}
       </div>
     );
   }
@@ -1514,15 +1532,17 @@ const AdminSchools: React.FC = () => {
             </h1>
             <p className="text-gray-500 mt-1">{selectedSchool.address} • {selectedSchool.phoneNumber}</p>
           </div>
-          <button 
-            onClick={() => setIsAddingClass(true)}
-            className="bg-blue-600 text-white px-6 py-2.5 rounded-xl font-semibold shadow-lg hover:bg-blue-700 flex items-center gap-2"
-          >
-            <Plus className="w-5 h-5" /> New Class
-          </button>
+          {canManageSchoolsAndClasses && (
+            <button 
+              onClick={() => setIsAddingClass(true)}
+              className="bg-blue-600 text-white px-6 py-2.5 rounded-xl font-semibold shadow-lg hover:bg-blue-700 flex items-center gap-2"
+            >
+              <Plus className="w-5 h-5" /> New Class
+            </button>
+          )}
         </div>
 
-        {isAddingClass && (
+        {canManageSchoolsAndClasses && isAddingClass && (
           <div className="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 animate-in slide-in-from-top">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold">Create New Class</h2>
@@ -1577,12 +1597,14 @@ const AdminSchools: React.FC = () => {
                   >
                     <Users className="w-4 h-4" />
                   </button>
-                  <button 
-                    onClick={(e) => { e.stopPropagation(); setDeleteModal({ isOpen: true, type: 'class', id: c.id, name: c.name }); }}
-                    className="p-1.5 text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  {canManageSchoolsAndClasses && (
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setDeleteModal({ isOpen: true, type: 'class', id: c.id, name: c.name }); }}
+                      className="p-1.5 text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
               </div>
               <h3 className="font-bold text-lg">{c.name}</h3>
@@ -1661,32 +1683,34 @@ const AdminSchools: React.FC = () => {
           <p className="text-gray-500 max-w-2xl mx-auto">Manage classes, students, and employees for this institution</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto pt-8">
+        <div className={`grid grid-cols-1 ${canManageSchoolsAndClasses ? 'md:grid-cols-2' : 'md:grid-cols-1'} gap-8 max-w-4xl mx-auto pt-8`}>
           <div 
-            onClick={() => { setViewMode('classes'); fetchClasses(selectedSchool.id); fetchEmployees(); }}
+            onClick={() => { setViewMode('classes'); fetchClasses(selectedSchool.id); if (canManageSchoolsAndClasses) fetchEmployees(); }}
             className="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-blue-200 transition-all cursor-pointer group text-center space-y-6"
           >
             <div className="w-20 h-20 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
               <GraduationCap className="w-10 h-10" />
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-gray-900">Chỉnh sửa lớp học</h3>
-              <p className="text-gray-500 mt-2">Manage classes and student enrollments</p>
+              <h3 className="text-2xl font-bold text-gray-900">{canManageSchoolsAndClasses ? 'Chỉnh sửa lớp học' : 'Xem lớp học'}</h3>
+              <p className="text-gray-500 mt-2">{canManageSchoolsAndClasses ? 'Manage classes and student enrollments' : 'View classes and students'}</p>
             </div>
           </div>
 
-          <div 
-            onClick={() => { setViewMode('employees'); fetchEmployees(); }}
-            className="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-blue-200 transition-all cursor-pointer group text-center space-y-6"
-          >
-            <div className="w-20 h-20 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
-              <Users className="w-10 h-10" />
+          {canManageSchoolsAndClasses && (
+            <div 
+              onClick={() => { setViewMode('employees'); fetchEmployees(); }}
+              className="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 hover:shadow-xl hover:border-blue-200 transition-all cursor-pointer group text-center space-y-6"
+            >
+              <div className="w-20 h-20 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-transform">
+                <Users className="w-10 h-10" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900">Chỉnh sửa nhân viên</h3>
+                <p className="text-gray-500 mt-2">Manage staff and teacher assignments</p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900">Chỉnh sửa nhân viên</h3>
-              <p className="text-gray-500 mt-2">Manage staff and teacher assignments</p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     );
@@ -1703,18 +1727,20 @@ const AdminSchools: React.FC = () => {
           <p className="text-gray-500 mt-1">Select a school to manage its classes and students</p>
         </div>
         
-        <button 
-          onClick={() => setIsAddingSchool(!isAddingSchool)}
-          className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-semibold shadow-lg transition-all active:scale-95 ${
-            isAddingSchool ? 'bg-gray-100 text-gray-600' : 'bg-blue-600 text-white hover:bg-blue-700'
-          }`}
-        >
-          {isAddingSchool ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
-          {isAddingSchool ? 'Cancel' : 'Add New School'}
-        </button>
+        {canManageSchoolsAndClasses && (
+          <button 
+            onClick={() => setIsAddingSchool(!isAddingSchool)}
+            className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-semibold shadow-lg transition-all active:scale-95 ${
+              isAddingSchool ? 'bg-gray-100 text-gray-600' : 'bg-blue-600 text-white hover:bg-blue-700'
+            }`}
+          >
+            {isAddingSchool ? <X className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+            {isAddingSchool ? 'Cancel' : 'Add New School'}
+          </button>
+        )}
       </div>
 
-      {isAddingSchool && (
+      {canManageSchoolsAndClasses && isAddingSchool && (
         <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 animate-in slide-in-from-top">
           <h2 className="text-xl font-bold mb-6 flex items-center gap-2"><Plus className="w-5 h-5 text-blue-600" /> New School Profile</h2>
           <form onSubmit={handleAddSchool} className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -1743,12 +1769,14 @@ const AdminSchools: React.FC = () => {
               <div className="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center shadow-lg shadow-blue-100">
                 <Building2 className="w-6 h-6" />
               </div>
-              <button 
-                onClick={(e) => { e.stopPropagation(); setDeleteModal({ isOpen: true, type: 'school', id: school.id, name: school.name }); }}
-                className="p-2 text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
-              >
-                <Trash2 className="w-5 h-5" />
-              </button>
+              {canManageSchoolsAndClasses && (
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setDeleteModal({ isOpen: true, type: 'school', id: school.id, name: school.name }); }}
+                  className="p-2 text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <Trash2 className="w-5 h-5" />
+                </button>
+              )}
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">{school.name}</h3>
             <div className="space-y-2 text-sm text-gray-500 mb-6">
