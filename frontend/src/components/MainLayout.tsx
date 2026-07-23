@@ -11,6 +11,16 @@ import type { User } from '../types/auth';
 const MainLayout: React.FC = () => {
   const { logout, user, token } = useAuthStore();
   const [profileOpen, setProfileOpen] = React.useState(false);
+  const [logoutOpen, setLogoutOpen] = React.useState(false);
+
+  const handleLogoutClick = () => {
+    setLogoutOpen(true);
+  };
+
+  const handleLogoutConfirm = () => {
+    logout();
+    setLogoutOpen(false);
+  };
 
   useEffect(() => {
     if (!token) return;
@@ -91,7 +101,7 @@ const MainLayout: React.FC = () => {
               </div>
 
               <button
-                onClick={logout}
+              onClick={handleLogoutClick}
                 className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-200"
                 title="Logout"
               >
@@ -100,13 +110,38 @@ const MainLayout: React.FC = () => {
             </div>
           </div>
         </header>
-
         <main className="p-8 overflow-y-auto flex-1">
           <Outlet />
         </main>
       </div>
 
       <UserProfileModal isOpen={profileOpen} onClose={() => setProfileOpen(false)} />
+      {logoutOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl border border-gray-100 overflow-hidden animate-in zoom-in-95 duration-200">
+            <div className="p-6 border-b border-gray-50">
+              <h3 className="text-lg font-bold text-gray-900">Xác nhận đăng xuất</h3>
+              <p className="text-sm text-gray-500 mt-1">Bạn có muốn đăng xuất không?</p>
+            </div>
+            <div className="p-6 flex gap-3">
+              <button
+                type="button"
+                onClick={() => setLogoutOpen(false)}
+                className="flex-1 py-2.5 px-4 rounded-xl font-medium text-gray-600 bg-gray-100 hover:bg-gray-200 transition-all"
+              >
+                Hủy
+              </button>
+              <button
+                type="button"
+                onClick={handleLogoutConfirm}
+                className="flex-1 py-2.5 px-4 rounded-xl font-medium text-white bg-red-600 hover:bg-red-700 transition-all"
+              >
+                Đăng xuất
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

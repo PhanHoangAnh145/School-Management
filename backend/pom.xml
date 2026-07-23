@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>vn.edu.ptit.PhanHoangAnh</groupId>
-	<artifactId>student-management</artifactId>
+	<artifactId>backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Student Management System</name>
 	<description>Restful API for student management system  using Hibernate and Spring Boot</description>
