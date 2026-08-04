@@ -2,6 +2,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.ClassLogbookRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.ClassRepository;
@@ -29,6 +30,7 @@ public class ClassLogbookServiceImpl implements ClassLogbookService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public ClassLogbookResponseDTO findClassLogbookById(Long id) {
         ClassLogbook classLogbook = this.classLogbookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
@@ -36,6 +38,7 @@ public class ClassLogbookServiceImpl implements ClassLogbookService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public ClassLogbookResponseDTO findClassLogbookByClassId(Long classId) {
         ClassLogbook classLogbook = this.classLogbookRepository.findByClazzId(classId)
                 .orElse(null);
@@ -43,6 +46,7 @@ public class ClassLogbookServiceImpl implements ClassLogbookService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<ClassLogbookResponseDTO> findAllClassLogbook() {
         List<ClassLogbook> classLogbooks = this.classLogbookRepository.findAll();
         return classLogbooks.stream()

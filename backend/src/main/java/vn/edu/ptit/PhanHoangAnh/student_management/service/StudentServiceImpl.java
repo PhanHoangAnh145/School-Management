@@ -3,6 +3,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.ClassRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.StudentRepository;
@@ -28,6 +29,7 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<StudentResponseDTO> findAllStudent() {
         return this.studentRepository.findAll()
                 .stream()
@@ -37,6 +39,7 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public StudentResponseDTO findStudentById(Long id) {
         return studentMapper.toDTO(this.studentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The student with id:" + id + " isn't existing")));
     }

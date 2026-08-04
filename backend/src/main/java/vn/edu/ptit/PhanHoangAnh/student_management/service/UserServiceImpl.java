@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.RoleRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.UserRepository;
@@ -46,12 +47,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public void saveUser(User user) {
         this.userRepository.save(user);
     }
 
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public Role getOrCreateRole(String roleName) {
         Role role = roleRepository.findByName(roleName);
         if (role == null) {
@@ -88,6 +91,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<UserResponseDTO> findAllUser() {
         return this.userRepository.findAll()
                 .stream()

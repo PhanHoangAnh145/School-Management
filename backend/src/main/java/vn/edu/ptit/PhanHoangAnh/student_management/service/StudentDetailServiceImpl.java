@@ -2,6 +2,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.StudentDetailRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.StudentRepository;
@@ -29,12 +30,14 @@ public class StudentDetailServiceImpl implements StudentDetailService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public StudentDetailDTO findStudentDetailById(Long id) {
         return studentMapper.toDetailDTO(this.studentDetailRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException()));
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public StudentDetailDTO findByStudentId(Long studentId) {
         return this.studentDetailRepository.findByStudentId(studentId)
                 .map(studentMapper::toDetailDTO)
@@ -42,6 +45,7 @@ public class StudentDetailServiceImpl implements StudentDetailService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<StudentDetailDTO> findAllStudentDetail() {
         return this.studentDetailRepository.findAll()
                 .stream()

@@ -2,6 +2,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.GradeReportRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.TranscriptionRepository;
@@ -29,6 +30,7 @@ public class GradeReportServiceImpl implements GradeReportService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public GradeReportResponseDTO findGradeReportById(Long id) {
         GradeReport gradeReport = this.gradeReportRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
@@ -36,6 +38,7 @@ public class GradeReportServiceImpl implements GradeReportService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<GradeReportResponseDTO> findAllGradeReport() {
         List<GradeReport> gradeReports = this.gradeReportRepository.findAll();
         return gradeReports.stream()

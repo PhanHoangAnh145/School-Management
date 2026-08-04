@@ -2,6 +2,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.TranscriptionRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.StudentRepository;
@@ -29,6 +30,7 @@ public class TranscriptionServiceImpl implements TranscriptionService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public TranscriptionResponseDTO findTranscriptionById(Long id) {
         Transcription transcription = this.transcriptionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
@@ -36,6 +38,7 @@ public class TranscriptionServiceImpl implements TranscriptionService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public TranscriptionResponseDTO findByStudentId(Long studentId) {
         return this.transcriptionRepository.findByStudentId(studentId)
                 .map(transcriptionMapper::toDTO)
@@ -43,6 +46,7 @@ public class TranscriptionServiceImpl implements TranscriptionService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<TranscriptionResponseDTO> findAllTranscription() {
         List<Transcription> transcriptions = this.transcriptionRepository.findAll();
         return transcriptions.stream()

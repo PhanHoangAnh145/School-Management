@@ -3,6 +3,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.ParentRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.StudentRepository;
@@ -29,7 +30,7 @@ public class ParentServiceImpl implements ParentService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<ParentResponseDTO> findAllParent() {
         List<Parent> parents = this.parentRepository.findAllWithStudent();
         return parents.stream()
@@ -38,7 +39,7 @@ public class ParentServiceImpl implements ParentService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public ParentResponseDTO findParentById(Long id) {
         Parent parent = this.parentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("The parent with id:" + id + " isn't existing"));
@@ -46,7 +47,7 @@ public class ParentServiceImpl implements ParentService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public ParentResponseDTO findByStudentId(Long studentId) {
         return this.parentRepository.findByStudentId(studentId)
                 .map(parent -> parentMapper.toDTO(parent))

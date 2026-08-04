@@ -3,6 +3,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.SubjectRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.TeacherRepository;
@@ -28,11 +29,13 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public SubjectResponseDTO findSubjectById(Long id) {
         return subjectMapper.toDTO(this.subjectRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The subject with id:" + id + " isn't existing")));
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<SubjectResponseDTO> findAllSubject() {
         return this.subjectRepository.findAll()
                 .stream()

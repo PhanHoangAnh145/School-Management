@@ -3,6 +3,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.ClassRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.EmployeeRepository;
@@ -36,11 +37,13 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public TeacherDTO findTeacherById(Long id) {
         return teacherMapper.toDTO(this.teacherRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("The teacher with id:" + id + " isn't existing")));
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<TeacherDTO> findAllTeacher() {
         return this.teacherRepository.findAll()
                 .stream()

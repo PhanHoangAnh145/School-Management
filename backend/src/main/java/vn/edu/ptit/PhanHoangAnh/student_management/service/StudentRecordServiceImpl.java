@@ -2,6 +2,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.StudentRecordRepository;
 import vn.edu.ptit.PhanHoangAnh.student_management.dao.StudentRepository;
@@ -30,6 +31,7 @@ public class StudentRecordServiceImpl implements StudentRecordService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public StudentRecordResponseDTO findStudentRecordById(Long id) {
         StudentRecord studentRecord = this.studentRecordRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException());
@@ -37,6 +39,7 @@ public class StudentRecordServiceImpl implements StudentRecordService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public StudentRecordResponseDTO findByStudentId(Long studentId) {
         return this.studentRecordRepository.findByStudentId(studentId)
                 .map(studentRecordMapper::toDTO)
@@ -44,6 +47,7 @@ public class StudentRecordServiceImpl implements StudentRecordService {
     }
 
     @Override
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     public List<StudentRecordResponseDTO> findAllStudentRecord() {
         List<StudentRecord> studentRecords = this.studentRecordRepository.findAll();
         return studentRecords.stream()
