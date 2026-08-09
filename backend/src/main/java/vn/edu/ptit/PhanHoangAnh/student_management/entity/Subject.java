@@ -30,4 +30,12 @@ public class Subject {
     @JsonBackReference(value = "teacher-subject")
     private List<Teacher> teacherList;
 
+    @Column(name = "subject_code")
+    private String subjectCode;
+
+    @Column(name = "credits")
+    private Long credits;
+
+    @OneToMany(mappedBy = "subject")
+    private List<CourseClass> courseClassList;
 }
