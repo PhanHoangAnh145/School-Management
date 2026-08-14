@@ -2,6 +2,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +16,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class SchoolServiceImpl implements SchoolService{
-    private SchoolRepository schoolRepository;
-    private SchoolMapper schoolMapper;
+    private final SchoolRepository schoolRepository;
+    private final SchoolMapper schoolMapper;
     @Autowired
     public SchoolServiceImpl (SchoolRepository schoolRepository, SchoolMapper schoolMapper) {
         this.schoolRepository = schoolRepository;
@@ -31,7 +32,10 @@ public class SchoolServiceImpl implements SchoolService{
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Cacheable(value = "schools")
     public List<SchoolResponseDTO> findAllSchool() {
+        System.out.println("🚨 [DEBUG] HÀM NÀY VỪA CHẠY! NGHĨA LÀ CHƯA CÓ CACHE NHÉ!");
+
         return this.schoolRepository.findAll()
                 .stream()
                 .map(school -> schoolMapper.toDTO(school))

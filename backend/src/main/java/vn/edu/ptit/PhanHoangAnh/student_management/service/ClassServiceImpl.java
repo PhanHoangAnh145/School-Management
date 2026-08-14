@@ -2,6 +2,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,10 @@ public class ClassServiceImpl implements ClassService{
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Cacheable(value = "classes")
     public List<ClassResponseDTO> findAllClass() {
+        System.out.println("🚨 [DEBUG] HÀM NÀY VỪA CHẠY! NGHĨA LÀ CHƯA CÓ CACHE NHÉ!");
+
         return this.classRepository.findAll()
                 .stream()
                 .map(clazz -> classMapper.toDTO(clazz))

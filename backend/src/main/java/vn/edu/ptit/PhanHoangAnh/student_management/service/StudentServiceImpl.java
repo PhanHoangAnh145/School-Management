@@ -2,6 +2,7 @@ package vn.edu.ptit.PhanHoangAnh.student_management.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,10 @@ public class StudentServiceImpl implements StudentService{
 
     @Override
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Cacheable(value = "students")
     public List<StudentResponseDTO> findAllStudent() {
+        System.out.println("🚨 [DEBUG] HÀM NÀY VỪA CHẠY! NGHĨA LÀ CHƯA CÓ CACHE NHÉ!");
+
         return this.studentRepository.findAll()
                 .stream()
                 .map(student -> studentMapper.toDTO(student))
